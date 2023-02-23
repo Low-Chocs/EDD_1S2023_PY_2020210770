@@ -2,11 +2,13 @@ package Login
 
 import (
 	"fmt"
+	"parte/archivo/Doubly_linked_list"
 	"parte/archivo/Queque"
 	"parte/archivo/Student"
 )
 
 var Waiting_queuqe Queque.Queque
+var Student_list Doubly_linked_list.Doubly_list
 
 func Menu() {
 	var option int8
@@ -66,7 +68,6 @@ func new_student() {
 	new_student.Set_last_name(student_last_name)
 	new_student.Set_pass(student_pass)
 	new_student.Set_carnet(student_carnet)
-	fmt.Println(new_student)
-	Waiting_queuqe.Insert(new_student)
-	Waiting_queuqe.Show()
+	Student_list.Insert(new_student)
+	Student_list.Show()
 }

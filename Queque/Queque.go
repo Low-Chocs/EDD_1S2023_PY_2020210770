@@ -14,6 +14,14 @@ func (nod *node) Set_student(new_student Student.Student) {
 	nod.student = new_student
 }
 
+func (nod *node) Get_student() Student.Student {
+	return nod.student
+}
+
+func (nod *node) Get_next() *node {
+	return nod.next
+}
+
 func (nod *node) Set_next(new_node *node) {
 	nod.next = new_node
 }
