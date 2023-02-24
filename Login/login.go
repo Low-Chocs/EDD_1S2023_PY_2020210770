@@ -1,6 +1,9 @@
 package Login
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func Login() {
 	var user string
@@ -23,6 +26,11 @@ func Login() {
 		if user == "EXIT" && pass == "EXIT" {
 			return
 		}
-
+		num, err := strconv.Atoi(user)
+		if err != nil {
+			fmt.Println("INGRESASTE MAL LAS CREDENCIALES")
+			continue
+		}
+		Student_list.Log(int(num), pass)
 	}
 }

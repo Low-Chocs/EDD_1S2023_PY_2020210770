@@ -1,7 +1,9 @@
 package Login
 
 import (
+	"encoding/csv"
 	"fmt"
+	"os"
 	"parte/archivo/Doubly_linked_list"
 	"parte/archivo/Queque"
 	"parte/archivo/Stack"
@@ -11,7 +13,7 @@ import (
 
 var Waiting_queuqe Queque.Queque
 var Student_list Doubly_linked_list.Doubly_list
-var admin_Stack Stack.Stack
+var Admin_Stack Stack.Stack
 
 func Menu() {
 	var option int8
@@ -32,12 +34,13 @@ func Menu() {
 		case 2:
 			Student_list.Show()
 		case 3:
-			fmt.Println("*   Estoy en la opcion 3      *")
 			new_student()
 		case 4:
-			fmt.Println("*   Estoy en la opcion 4      *")
-			Waiting_queuqe.Pop()
-			Waiting_queuqe.Show()
+			fmt.Print("Ingresa el nombre del archivo (NO INGRESES LA EXTENSIÓN):")
+			var file_name string
+			fmt.Scanln(&file_name)
+			massive_load(file_name)
+			fmt.Println()
 		case 5:
 			fmt.Println("*   ¡REGRESANDO!              *")
 			return
@@ -106,9 +109,9 @@ func pending_students() {
 				new_action.Action = "Se aceptó a:"
 				new_action.Date = get_date()
 				new_action.Time = get_time()
-				admin_Stack.Push(new_action)
+				Admin_Stack.Push(new_action)
 				Waiting_queuqe.Pop()
-				admin_Stack.Show()
+				Admin_Stack.Show()
 			}
 		case 2:
 			var new_action Stack.Action
@@ -118,8 +121,8 @@ func pending_students() {
 			new_action.Action = "Se rechazo a:"
 			new_action.Date = get_date()
 			new_action.Time = get_time()
-			admin_Stack.Push(new_action)
-			admin_Stack.Show()
+			Admin_Stack.Push(new_action)
+			Admin_Stack.Show()
 			Waiting_queuqe.Pop()
 			if Waiting_queuqe.Get_quantity() > 0 {
 				fmt.Println("SE RECHAZO AL ESTUDIANTE")
@@ -142,4 +145,30 @@ func get_date() string {
 func get_time() string {
 	now := time.Now()
 	return now.Format("15:04:05")
+}
+
+func massive_load(file_name string) {
+
+	file, err := os.Open(file_name + ".csv")
+	if err != nil {
+		fmt.Println("Error al abrir el archivo:", err)
+		return
+	}
+	defer file.Close()
+
+	// Crea un nuevo lector CSV
+	reader := csv.NewReader(file)
+
+	// Lee todas las filas del archivo CSV
+	rows, err := reader.ReadAll()
+	if err != nil {
+		fmt.Println("Error al leer el archivo CSV:", err)
+		return
+	}
+
+	// Imprime todas las filas en la consola
+	for _, row := range rows {
+		fmt.Println(row)
+	}
+
 }

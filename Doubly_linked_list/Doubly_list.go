@@ -2,11 +2,14 @@ package Doubly_linked_list
 
 import (
 	"fmt"
+	"parte/archivo/Stack"
 	"parte/archivo/Student"
+	"time"
 )
 
 type node struct {
 	student  Student.Student
+	binnacle Stack.Stack
 	next     *node
 	previous *node
 }
@@ -25,6 +28,10 @@ func (nod *node) Set_previous(new_node *node) {
 
 func (nod *node) Get_student() Student.Student {
 	return nod.student
+}
+
+func (nod *node) Get_binnacle() Stack.Stack {
+	return nod.binnacle
 }
 
 func (nod *node) Get_next() *node {
@@ -113,4 +120,29 @@ func (list *Doubly_list) Show() {
 		fmt.Println("****************************************************************")
 		actual = actual.next
 	}
+}
+
+func (list *Doubly_list) Log(student_carnet int, student_pass string) bool {
+
+	actual := list.head
+	for i := 0; i < list.size; i++ {
+		if actual.student.Get_carnet() == student_carnet && actual.student.Get_pass() == student_pass {
+			fmt.Println("SE INICIO CORRECTAMENTE")
+			actual.binnacle.Push(list.add_log())
+			return true
+		}
+
+		actual = actual.next
+	}
+
+	fmt.Println("Revisa tus credenciales")
+	return false
+}
+
+func (list *Doubly_list) add_log() Stack.Action {
+	var new_log Stack.Action
+	new_log.Date = time.Now().Format("02-01-2006")
+	new_log.Time = time.Now().Format("15:04:05")
+	new_log.Action = "SE INICIO SESIÓN"
+	return new_log
 }
