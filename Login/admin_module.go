@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"parte/archivo/Doubly_linked_list"
 	"parte/archivo/Queque"
+	"parte/archivo/Stack"
 	"parte/archivo/Student"
+	"time"
 )
 
 var Waiting_queuqe Queque.Queque
 var Student_list Doubly_linked_list.Doubly_list
+var admin_Stack Stack.Stack
 
 func Menu() {
 	var option int8
@@ -94,12 +97,29 @@ func pending_students() {
 
 		switch option {
 		case 1:
-			Waiting_queuqe.Pop()
 			if Waiting_queuqe.Get_quantity() > 0 {
 				Student_list.Insert(Waiting_queuqe.Get_first())
+				var new_action Stack.Action
+				new_action.Student_name = Waiting_queuqe.Get_first().Get_name()
+				new_action.Student_last_name = Waiting_queuqe.Get_first().Get_last_name()
+				new_action.Student_carnet = Waiting_queuqe.Get_first().Get_carnet()
+				new_action.Action = "Se aceptó a:"
+				new_action.Date = get_date()
+				new_action.Time = get_time()
+				admin_Stack.Push(new_action)
+				Waiting_queuqe.Pop()
+				admin_Stack.Show()
 			}
-
 		case 2:
+			var new_action Stack.Action
+			new_action.Student_name = Waiting_queuqe.Get_first().Get_name()
+			new_action.Student_last_name = Waiting_queuqe.Get_first().Get_last_name()
+			new_action.Student_carnet = Waiting_queuqe.Get_first().Get_carnet()
+			new_action.Action = "Se rechazo a:"
+			new_action.Date = get_date()
+			new_action.Time = get_time()
+			admin_Stack.Push(new_action)
+			admin_Stack.Show()
 			Waiting_queuqe.Pop()
 			if Waiting_queuqe.Get_quantity() > 0 {
 				fmt.Println("SE RECHAZO AL ESTUDIANTE")
@@ -112,4 +132,14 @@ func pending_students() {
 
 		}
 	}
+
+}
+func get_date() string {
+	now := time.Now()
+	return now.Format("02-01-2006")
+}
+
+func get_time() string {
+	now := time.Now()
+	return now.Format("15:04:05")
 }

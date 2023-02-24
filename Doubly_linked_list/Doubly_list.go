@@ -63,34 +63,36 @@ func (list *Doubly_list) Insert(new_student Student.Student) {
 		return
 	}
 
-	if list.is_not_repeated(&new_node) {
-		if new_node.student.Get_carnet() < list.head.student.Get_carnet() {
-			new_node.next = list.head
-			list.head.previous = &new_node
-			list.head = &new_node
-			list.size++
-			return
-		}
-		if new_node.student.Get_carnet() > list.foot.student.Get_carnet() {
-			new_node.previous = list.foot
-			list.foot.next = &new_node
-			list.foot = &new_node
-			list.size++
-			return
-		}
-		actual := list.head
-		for i := 0; i < list.size; i++ {
-			if actual.student.Get_carnet() > new_node.student.Get_carnet() {
-				new_node.next = actual
-				new_node.previous = actual.previous
-				actual.previous.next = &new_node
-				actual.previous = &new_node
-				list.size++
-				return
-			}
-			actual = actual.next
-		}
+	if !list.is_not_repeated(&new_node) {
+		fmt.Println("ESTUDIANTE REPETIDO")
+		return
+	}
 
+	if new_node.student.Get_carnet() < list.head.student.Get_carnet() {
+		new_node.next = list.head
+		list.head.previous = &new_node
+		list.head = &new_node
+		list.size++
+		return
+	}
+	if new_node.student.Get_carnet() > list.foot.student.Get_carnet() {
+		new_node.previous = list.foot
+		list.foot.next = &new_node
+		list.foot = &new_node
+		list.size++
+		return
+	}
+	actual := list.head
+	for i := 0; i < list.size; i++ {
+		if actual.student.Get_carnet() > new_node.student.Get_carnet() {
+			new_node.next = actual
+			new_node.previous = actual.previous
+			actual.previous.next = &new_node
+			actual.previous = &new_node
+			list.size++
+			return
+		}
+		actual = actual.next
 	}
 
 	fmt.Println("SE AGREGO EXITOSAMENTE AL ESTUDIANTE")
