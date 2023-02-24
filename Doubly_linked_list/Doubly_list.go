@@ -45,6 +45,7 @@ func (list *Doubly_list) is_not_repeated(new_student *node) bool {
 	actual := list.head
 	for i := 0; i < list.size; i++ {
 		if actual.student.Get_carnet() == new_student.student.Get_carnet() {
+			fmt.Println("SE HA REPETIDO EL CARNET, NO SE AGREGO")
 			return false
 		}
 		actual = actual.next
@@ -91,6 +92,8 @@ func (list *Doubly_list) Insert(new_student Student.Student) {
 		}
 
 	}
+
+	fmt.Println("SE AGREGO EXITOSAMENTE AL ESTUDIANTE")
 
 }
 

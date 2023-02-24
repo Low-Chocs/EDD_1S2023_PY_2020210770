@@ -7,16 +7,16 @@ type Student struct {
 	carnet    int
 }
 
-func (student *Student) Get_name() string {
+func (student Student) Get_name() string {
 	return student.name
 }
-func (student *Student) Get_last_name() string {
+func (student Student) Get_last_name() string {
 	return student.last_name
 }
-func (student *Student) Get_pass() string {
+func (student Student) Get_pass() string {
 	return student.password
 }
-func (student *Student) Get_carnet() int {
+func (student Student) Get_carnet() int {
 	return student.carnet
 }
 

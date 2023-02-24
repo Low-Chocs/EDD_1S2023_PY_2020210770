@@ -26,6 +26,7 @@ func Menu() {
 		switch option {
 		case 1:
 			fmt.Println("*   Estoy en la opcion 1      * ")
+			pending_students()
 		case 2:
 			fmt.Println("*   Estoy en la opcion 2      *")
 		case 3:
@@ -68,6 +69,44 @@ func new_student() {
 	new_student.Set_last_name(student_last_name)
 	new_student.Set_pass(student_pass)
 	new_student.Set_carnet(student_carnet)
-	Student_list.Insert(new_student)
-	Student_list.Show()
+	Waiting_queuqe.Insert(new_student)
+	fmt.Println("Se ha agregado el estudiante a la cola")
+	fmt.Println()
+
+}
+
+func pending_students() {
+	var option int8
+	for {
+		fmt.Println()
+		fmt.Println("******* ESTUDIANTES PENDIENTES:", Waiting_queuqe.Get_quantity(), "*******")
+		fmt.Println("*                                      *")
+		if Waiting_queuqe.Get_quantity() > 0 {
+			fmt.Println("ESTUDIANTE:", Waiting_queuqe.Get_first().Get_name(), "", Waiting_queuqe.Get_first().Get_last_name(), "", Waiting_queuqe.Get_first().Get_carnet())
+		}
+		fmt.Println("*                                      *")
+		fmt.Println("*   1. Aceptar estudiante              *")
+		fmt.Println("*   2. Rechazar estudiante             *")
+		fmt.Println("*   3. Volver al menú                  *")
+		fmt.Println("*ESTUDIANTES CON MISMO CARNET NO SON AGREGADOS*")
+		fmt.Println("****************************************")
+		fmt.Print("Escribe un valor: ")
+		fmt.Scanln(&option)
+
+		switch option {
+		case 1:
+			Student_list.Insert(Waiting_queuqe.Get_first())
+			Waiting_queuqe.Pop()
+
+		case 2:
+			Waiting_queuqe.Pop()
+			fmt.Println("SE RECHAZO AL ESTUDIANTE")
+		case 3:
+			fmt.Println("*   ¡REGRESANDO!              *")
+			return
+		default:
+			fmt.Println("*   Opción no valida          *")
+
+		}
+	}
 }

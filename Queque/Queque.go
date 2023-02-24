@@ -73,3 +73,11 @@ func (queque *Queque) Pop() {
 	queque.first = queque.first.next
 	queque.quantity--
 }
+
+func (queque *Queque) Get_quantity() int {
+	return queque.quantity
+}
+
+func (queque *Queque) Get_first() Student.Student {
+	return queque.first.student
+}
