@@ -79,11 +79,11 @@ func (list *Doubly_list) Insert(new_student Student.Student) {
 		}
 		actual := list.head
 		for i := 0; i < list.size; i++ {
-			if actual.student.Get_carnet() < new_node.student.Get_carnet() {
-				new_node.next = actual.next
-				new_node.previous = actual
-				actual.next.previous = &new_node
-				actual.next = &new_node
+			if actual.student.Get_carnet() > new_node.student.Get_carnet() {
+				new_node.next = actual
+				new_node.previous = actual.previous
+				actual.previous.next = &new_node
+				actual.previous = &new_node
 				list.size++
 				return
 			}
