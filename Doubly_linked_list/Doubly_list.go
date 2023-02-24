@@ -98,9 +98,17 @@ func (list *Doubly_list) Insert(new_student Student.Student) {
 }
 
 func (list *Doubly_list) Show() {
+
+	if list.size == 0 {
+		fmt.Println("******************* NO HAY ESTUDIANTES PARA MOSTRAR *************************")
+		return
+	}
+
+	fmt.Println("******************* LISTADO DE ESTUDIANTES *************************")
 	actual := list.head
 	for i := 0; i < list.size; i++ {
-		fmt.Println(actual)
+		fmt.Println("Nombre:", actual.student.Get_name(), actual.student.Get_last_name(), "Carnet:", actual.student.Get_carnet())
+		fmt.Println("****************************************************************")
 		actual = actual.next
 	}
 }

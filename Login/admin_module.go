@@ -25,10 +25,9 @@ func Menu() {
 		fmt.Scanln(&option)
 		switch option {
 		case 1:
-			fmt.Println("*   Estoy en la opcion 1      * ")
 			pending_students()
 		case 2:
-			fmt.Println("*   Estoy en la opcion 2      *")
+			Student_list.Show()
 		case 3:
 			fmt.Println("*   Estoy en la opcion 3      *")
 			new_student()
@@ -95,12 +94,16 @@ func pending_students() {
 
 		switch option {
 		case 1:
-			Student_list.Insert(Waiting_queuqe.Get_first())
 			Waiting_queuqe.Pop()
+			if Waiting_queuqe.Get_quantity() > 0 {
+				Student_list.Insert(Waiting_queuqe.Get_first())
+			}
 
 		case 2:
 			Waiting_queuqe.Pop()
-			fmt.Println("SE RECHAZO AL ESTUDIANTE")
+			if Waiting_queuqe.Get_quantity() > 0 {
+				fmt.Println("SE RECHAZO AL ESTUDIANTE")
+			}
 		case 3:
 			fmt.Println("*   ¡REGRESANDO!              *")
 			return
