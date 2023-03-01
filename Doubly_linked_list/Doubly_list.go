@@ -259,7 +259,6 @@ func (list *Doubly_list) Graph() {
 	graph += "nodesep=0.5; \n ranksep= 0.5;\n"
 	actual4 := list.head
 	for i := 0; i < list.size; i++ {
-		fmt.Println("HE ENTRADOOO")
 		for j := 0; j < actual4.binnacle.Get_size(); j++ {
 			graph += "U" + strconv.Itoa(i) + strconv.Itoa(j) + strconv.Itoa(0)
 			graph += "["

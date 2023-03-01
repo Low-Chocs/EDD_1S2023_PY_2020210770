@@ -203,9 +203,6 @@ func massive_load(file_name string) {
 		fmt.Println("Error al leer el archivo CSV:", err)
 		return
 	}
-	fmt.Println(rows[1][0])
-	fmt.Println(rows[1][1])
-	fmt.Println(rows[1][2])
 	// Imprime todas las filas en la consola
 	for _, row := range rows {
 		if counter == 0 {
