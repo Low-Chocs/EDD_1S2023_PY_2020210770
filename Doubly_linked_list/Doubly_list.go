@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"parte/archivo/Dot"
 	"parte/archivo/Stack"
 	"parte/archivo/Student"
+	"strconv"
 	"time"
 )
 
@@ -164,6 +166,7 @@ func (list *Doubly_list) Show() {
 	actual := list.head
 	for i := 0; i < list.size; i++ {
 		fmt.Println("Nombre:", actual.student.Get_name(), actual.student.Get_last_name(), "Carnet:", actual.student.Get_carnet())
+		fmt.Println(actual.Get_binnacle())
 		fmt.Println("****************************************************************")
 		actual = actual.next
 	}
@@ -221,6 +224,74 @@ func (list *Doubly_list) Create_json() {
 	defer archivo.Close()
 	archivo.WriteString(string(jsonStr))
 
+}
+
+func (list *Doubly_list) Graph() {
+	graph := "digraph G {\nPILA[style=invis, fillcolor=transparent, color=transparent];\nnode [shape=box];\n"
+	actual := list.head
+	for i := 0; i < list.size; i++ {
+		graph += "U" + strconv.Itoa(i)
+		graph += "["
+		graph += "label = \""
+		graph += "Nombre: " + actual.student.Get_name() + " " + actual.student.Get_last_name()
+		graph += "\n"
+		graph += "Carnet: " + strconv.Itoa(actual.student.Get_carnet())
+		graph += "\n"
+		graph += "Pass: " + actual.student.Get_pass()
+		graph += "\""
+		graph += "];"
+		actual = actual.next
+	}
+	actual2 := list.head
+	for i := 0; i < list.size-1; i++ {
+		graph += "U" + strconv.Itoa(i) + " -> " + "U" + strconv.Itoa(i+1) + " [dir=both, color=black ] " + ";"
+		graph += "\n"
+		actual2 = actual2.next
+	}
+	actual3 := list.head
+	graph += "{rank = same;"
+	for i := 0; i < list.size; i++ {
+		graph += "U" + strconv.Itoa(i)
+		graph += " "
+		actual3 = actual3.next
+	}
+	graph += "};\n"
+	graph += "nodesep=0.5; \n ranksep= 0.5;\n"
+	actual4 := list.head
+	for i := 0; i < list.size; i++ {
+		fmt.Println("HE ENTRADOOO")
+		for j := 0; j < actual4.binnacle.Get_size(); j++ {
+			graph += "U" + strconv.Itoa(i) + strconv.Itoa(j) + strconv.Itoa(0)
+			graph += "["
+			graph += "label = \" Se inicio sesión \n" + actual4.binnacle.Get_element(j).Date + " " + actual4.binnacle.Get_element(j).Time
+			graph += "\""
+			graph += "];"
+			graph += "\n"
+		}
+		if actual4.binnacle.Get_size() == 1 {
+			graph += "U" + strconv.Itoa(i) + " -> " + "U" + strconv.Itoa(i) + strconv.Itoa(0) + strconv.Itoa(0)
+			graph += "\n"
+		} else if actual4.binnacle.Get_size() > 1 {
+			graph += "U" + strconv.Itoa(i) + " -> " + "U" + strconv.Itoa(i) + strconv.Itoa(0) + strconv.Itoa(0)
+			graph += "\n"
+			for k := 0; k < actual4.binnacle.Get_size()-1; k++ {
+				graph += "U" + strconv.Itoa(i) + strconv.Itoa(k) + strconv.Itoa(0) + " -> " + "U" + strconv.Itoa(i) + strconv.Itoa(k+1) + strconv.Itoa(0)
+				graph += "\n"
+			}
+		}
+		actual4 = actual4.next
+	}
+
+	graph += "}"
+	fmt.Print(graph)
+	// Abre un archivo en modo de escritura
+	archivo, err := os.Create("student.dot")
+	if err != nil {
+		panic(err)
+	}
+	defer archivo.Close()
+	archivo.WriteString(string(graph))
+	Dot.GeneratePNG("student.dot", "Archivo")
 }
 
 type JsonLoad struct {

@@ -2,6 +2,8 @@ package Queque
 
 import (
 	"fmt"
+	"os"
+	"parte/archivo/Dot"
 	"parte/archivo/Student"
 	"strconv"
 )
@@ -107,5 +109,13 @@ func (queque *Queque) Graph() {
 	}
 
 	graph += "}"
+	// Abre un archivo en modo de escritura
+	archivo, err := os.Create("pending_student.dot")
+	if err != nil {
+		panic(err)
+	}
+	defer archivo.Close()
+	archivo.WriteString(string(graph))
+	Dot.GeneratePNG("pending_student.dot", "Archivo")
 	fmt.Print(graph)
 }

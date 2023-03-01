@@ -2,6 +2,8 @@ package Stack
 
 import (
 	"fmt"
+	"os"
+	"parte/archivo/Dot"
 	"strconv"
 )
 
@@ -20,7 +22,27 @@ type Stack struct {
 	size int
 }
 
+func (stack *Stack) Get_head() *Action {
+	return stack.head
+}
+
+func (stack *Stack) Get_size() int {
+	return stack.size
+}
+func (stack *Stack) Get_element(value int) *Action {
+	actual := stack.head
+	for i := 0; i < stack.size; i++ {
+		if value == i {
+			return stack.head
+		}
+
+		actual = actual.next
+	}
+	return stack.head
+}
+
 func (stack *Stack) Push(new_Action Action) {
+	fmt.Println("X2")
 	if stack.size == 0 {
 		stack.head = &new_Action
 		stack.size++
@@ -78,5 +100,13 @@ func (stack *Stack) Graph() {
 	}
 
 	graph += "}"
+	// Abre un archivo en modo de escritura
+	archivo, err := os.Create("admin_stack.dot")
+	if err != nil {
+		panic(err)
+	}
+	defer archivo.Close()
+	archivo.WriteString(string(graph))
+	Dot.GeneratePNG("admin_stack.dot", "Archivo")
 	fmt.Print(graph)
 }

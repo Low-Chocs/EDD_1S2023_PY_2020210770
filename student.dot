@@ -1,0 +1,45 @@
+digraph G {
+PILA[style=invis, fillcolor=transparent, color=transparent];
+node [shape=box];
+U0[label = "Nombre: Ebany Larios
+Carnet: 201403877
+Pass: qwerty12"];U1[label = "Nombre: Manolo Ramirez
+Carnet: 201503933
+Pass: Manolo93"];U2[label = "Nombre: Alejandro Yac
+Carnet: 201700315
+Pass: Alejandro34"];U3[label = "Nombre: Cristian Suy
+Carnet: 201700918
+Pass: Cris123"];U4[label = "Nombre: Kevin Sotoj
+Carnet: 201710130
+Pass: Kevin80"];U5[label = "Nombre: Leonardo Martinez
+Carnet: 201780044
+Pass: leo123"];U6[label = "Nombre: Erick Chacon
+Carnet: 201807169
+Pass: Erick91"];U7[label = "Nombre: Kevin Castaneda
+Carnet: 201901801
+Pass: Kevin3"];U8[label = "Nombre: Robin Buezo
+Carnet: 201944994
+Pass: Robin27"];U9[label = "Nombre: Diana Berducido
+Carnet: 202000277
+Pass: Diana55"];U10[label = "Nombre: Kevin Hernandez
+Carnet: 202001053
+Pass: Kevin4"];U11[label = "Nombre: Damaris Muralles
+Carnet: 202100953
+Pass: Damaris89"];U12[label = "Nombre: Wendi Vicente
+Carnet: 202106484
+Pass: Wendi52"];U0 -> U1 [dir=both, color=black ] ;
+U1 -> U2 [dir=both, color=black ] ;
+U2 -> U3 [dir=both, color=black ] ;
+U3 -> U4 [dir=both, color=black ] ;
+U4 -> U5 [dir=both, color=black ] ;
+U5 -> U6 [dir=both, color=black ] ;
+U6 -> U7 [dir=both, color=black ] ;
+U7 -> U8 [dir=both, color=black ] ;
+U8 -> U9 [dir=both, color=black ] ;
+U9 -> U10 [dir=both, color=black ] ;
+U10 -> U11 [dir=both, color=black ] ;
+U11 -> U12 [dir=both, color=black ] ;
+{rank = same;U0 U1 U2 U3 U4 U5 U6 U7 U8 U9 U10 U11 U12 };
+nodesep=0.5; 
+ ranksep= 0.5;
+}

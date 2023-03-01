@@ -73,7 +73,7 @@ func report() {
 		fmt.Scanln(&option)
 		switch option {
 		case 1:
-			pending_students()
+			Student_list.Graph()
 		case 2:
 			Waiting_queuqe.Graph()
 		case 3:
