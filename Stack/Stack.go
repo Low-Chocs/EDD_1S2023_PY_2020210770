@@ -1,6 +1,9 @@
 package Stack
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type Action struct {
 	Action            string
@@ -44,4 +47,36 @@ func (stack *Stack) Show() {
 		fmt.Println(actual)
 		actual = actual.next
 	}
+}
+
+func (stack *Stack) Graph() {
+	graph := "digraph G {\nPILA[style=invis, fillcolor=transparent, color=transparent];\nnode [shape=box];\n"
+	actual := stack.head
+	for i := 0; i < stack.size; i++ {
+		graph += "U" + strconv.Itoa(i)
+		graph += "["
+		graph += "label = \""
+		graph += actual.Action
+		graph += "\n"
+		graph += actual.Student_name
+		graph += "\n"
+		graph += actual.Student_last_name
+		graph += "\n"
+		graph += actual.Date
+		graph += "\n"
+		graph += actual.Time
+		graph += "\n"
+		graph += "\""
+		graph += "];"
+		actual = actual.next
+	}
+	actual2 := stack.head
+	for i := 0; i < stack.size-1; i++ {
+		graph += "U" + strconv.Itoa(i) + " -> " + "U" + strconv.Itoa(i+1) + ";"
+		graph += "\n"
+		actual2 = actual2.next
+	}
+
+	graph += "}"
+	fmt.Print(graph)
 }

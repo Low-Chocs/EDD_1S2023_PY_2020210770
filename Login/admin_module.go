@@ -8,6 +8,8 @@ import (
 	"parte/archivo/Queque"
 	"parte/archivo/Stack"
 	"parte/archivo/Student"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -24,7 +26,9 @@ func Menu() {
 		fmt.Println("*   2. Ver Estudiantes en el Sistema   *")
 		fmt.Println("*   3. Registrar Nuevo Estudiantes     *")
 		fmt.Println("*   4. Carga Masiva de Estudiantes     *")
-		fmt.Println("*   5. Salir                           *")
+		fmt.Println("*   5. Crear Json                      *")
+		fmt.Println("*   6. Reportes                        *")
+		fmt.Println("*   7. Salir                           *")
 		fmt.Println("****************************************")
 		fmt.Print("Escribe un valor: ")
 		fmt.Scanln(&option)
@@ -42,6 +46,39 @@ func Menu() {
 			massive_load(file_name)
 			fmt.Println()
 		case 5:
+			Student_list.Create_json()
+		case 6:
+			report()
+		case 7:
+			fmt.Println("*   ¡REGRESANDO!              *")
+			return
+		default:
+			fmt.Println("*   Opción no valida          *")
+
+		}
+	}
+}
+
+func report() {
+	var option int8
+	for {
+		fmt.Println()
+		fmt.Println("********** MENU ADMINISTRADOR **********")
+		fmt.Println("*   1. Ver Estudiantes Pendientes      *")
+		fmt.Println("*   2. Ver Estudiantes en Espera       *")
+		fmt.Println("*   3. Pila de acciones                *")
+		fmt.Println("*   4. Regresar al menú principal      *")
+		fmt.Println("****************************************")
+		fmt.Print("Escribe un valor: ")
+		fmt.Scanln(&option)
+		switch option {
+		case 1:
+			pending_students()
+		case 2:
+			Waiting_queuqe.Graph()
+		case 3:
+			Admin_Stack.Graph()
+		case 4:
 			fmt.Println("*   ¡REGRESANDO!              *")
 			return
 		default:
@@ -148,6 +185,7 @@ func get_time() string {
 }
 
 func massive_load(file_name string) {
+	counter := 0
 
 	file, err := os.Open(file_name + ".csv")
 	if err != nil {
@@ -165,10 +203,31 @@ func massive_load(file_name string) {
 		fmt.Println("Error al leer el archivo CSV:", err)
 		return
 	}
-
+	fmt.Println(rows[1][0])
+	fmt.Println(rows[1][1])
+	fmt.Println(rows[1][2])
 	// Imprime todas las filas en la consola
 	for _, row := range rows {
-		fmt.Println(row)
+		if counter == 0 {
+			counter++
+			continue
+		}
+		carnet, err := strconv.Atoi(row[0])
+		if err != nil {
+			fmt.Println("Error: ", err)
+		}
+		names := strings.Split(row[1], " ")
+		name := names[0]
+		last_name := names[1]
+		password := row[2]
+
+		var new_student Student.Student
+		new_student.Set_name(name)
+		new_student.Set_last_name(last_name)
+		new_student.Set_pass(password)
+		new_student.Set_carnet(carnet)
+		Waiting_queuqe.Insert(new_student)
+
 	}
 
 }

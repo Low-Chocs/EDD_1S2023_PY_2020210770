@@ -3,6 +3,7 @@ package Queque
 import (
 	"fmt"
 	"parte/archivo/Student"
+	"strconv"
 )
 
 type node struct {
@@ -80,4 +81,31 @@ func (queque *Queque) Get_quantity() int {
 
 func (queque *Queque) Get_first() Student.Student {
 	return queque.first.student
+}
+
+func (queque *Queque) Graph() {
+	graph := "digraph G {\nPILA[style=invis, fillcolor=transparent, color=transparent];\nnode [shape=box];\n"
+	graph += "rankdir = LR;\n"
+	actual := queque.first
+	for i := 0; i < queque.quantity; i++ {
+		graph += "U" + strconv.Itoa(i)
+		graph += "["
+		graph += "label = \""
+		graph += actual.student.Get_name() + " " + actual.student.Get_last_name()
+		graph += "\n"
+		graph += strconv.Itoa(actual.student.Get_carnet())
+		graph += "\n"
+		graph += "\""
+		graph += "];"
+		actual = actual.next
+	}
+	actual2 := queque.first
+	for i := 0; i < queque.quantity-1; i++ {
+		graph += "U" + strconv.Itoa(i) + " -> " + "U" + strconv.Itoa(i+1) + ";"
+		graph += "\n"
+		actual2 = actual2.next
+	}
+
+	graph += "}"
+	fmt.Print(graph)
 }
