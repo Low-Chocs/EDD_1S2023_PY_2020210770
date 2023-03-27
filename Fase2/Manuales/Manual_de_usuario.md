@@ -1,1 +1,1 @@
-//Aqui ira el manual de usuario
+//Aqui ira el manual de usuarioS
