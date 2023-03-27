@@ -1,0 +1,30 @@
+digraph G {
+PILA[style=invis, fillcolor=transparent, color=transparent];
+node [shape=box];
+U0[label = "Nombre: Ebany Larios
+Carnet: 201403877
+Pass: qwerty12"];U1[label = "Nombre: Cristian Suy
+Carnet: 201700918
+Pass: Cris123"];U2[label = "Nombre: Leonardo Martinez
+Carnet: 201780044
+Pass: leo123"];U3[label = "Nombre: Diana Berducido
+Carnet: 202000277
+Pass: Diana55"];U4[label = "Nombre: Kevin Hernandez
+Carnet: 202001053
+Pass: Kevin4"];U5[label = "Nombre: Luis Moreira
+Carnet: 202010770
+Pass: 123"];U0 -> U1 [dir=both, color=black ] ;
+U1 -> U2 [dir=both, color=black ] ;
+U2 -> U3 [dir=both, color=black ] ;
+U3 -> U4 [dir=both, color=black ] ;
+U4 -> U5 [dir=both, color=black ] ;
+{rank = same;U0 U1 U2 U3 U4 U5 };
+nodesep=0.5; 
+ ranksep= 0.5;
+U200[label = " Se inicio sesión 
+01-03-2023 09:47:09"];
+U2 -> U200
+U500[label = " Se inicio sesión 
+01-03-2023 09:46:29"];
+U5 -> U500
+}

@@ -1,0 +1,51 @@
+digraph G {
+PILA[style=invis, fillcolor=transparent, color=transparent];
+node [shape=box];
+U0[label = "Se rechazo a:
+Manolo
+Ramirez
+01-03-2023
+09:45:25
+"];U1[label = "Se rechazo a:
+Kevin
+Castaneda
+01-03-2023
+09:45:24
+"];U2[label = "Se aceptó a:
+Kevin
+Hernandez
+01-03-2023
+09:45:23
+"];U3[label = "Se aceptó a:
+Diana
+Berducido
+01-03-2023
+09:45:23
+"];U4[label = "Se aceptó a:
+Ebany
+Larios
+01-03-2023
+09:45:22
+"];U5[label = "Se aceptó a:
+Leonardo
+Martinez
+01-03-2023
+09:45:21
+"];U6[label = "Se aceptó a:
+Cristian
+Suy
+01-03-2023
+09:45:21
+"];U7[label = "Se aceptó a:
+Luis
+Moreira
+01-03-2023
+09:44:30
+"];U0 -> U1;
+U1 -> U2;
+U2 -> U3;
+U3 -> U4;
+U4 -> U5;
+U5 -> U6;
+U6 -> U7;
+}
