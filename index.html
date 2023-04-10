@@ -29,7 +29,7 @@
                         <input type="checkbox" id="check_pass" onclick="show_password()">
                         <label id="check_pass_label">Ver Contraseña</label>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="log_buttons">
                 <button class="log_button" id="log_in_bt" onclick="log_in()">Ingresar</button>
@@ -38,29 +38,102 @@
 
         <div id="part2">
             <header id="header2">
-                <a class="admin_link">Ver estudiantes</a>
-                <a class="admin_link">Árbol de estudiantes</a>
-                <a class="admin_link"  id="loading_json" onclick="load_user()">Carga masiva</a>
+                <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+                <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
+                <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
                 <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a>
             </header>
-            <div class="login">
+            <div class="login" id="show_student_info">
                 <div class="login_data show_student_info">
-                    <h2 id="log_label">Modulo de administrador</h2>
-                    <input type="text" placeholder="Ingresa tu usuario" id="user_input">
-                    <input type="password" placeholder="Ingresa tu contraseña" id="pass_input">
-                    <div class="check">
-                        <input type="checkbox" id="check_pass" onclick="show_password()">
-                        <label id="check_pass_label">Ver Contraseña</label>
-                    </div>
+
+                    <table id="pre_order_table">
+                        <thead>
+                            <tr>
+                                <th>Carnet</th>
+                                <th>Nombre</th>
+                                <th>Carpeta raíz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Agrega más filas según sea necesario -->
+                        </tbody>
+                    </table>
+
+                    <table id="in_order_table">
+                        <thead>
+                            <tr>
+                                <th>Carnet</th>
+                                <th>Nombre</th>
+                                <th>Carpeta raíz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Agrega más filas según sea necesario -->
+                        </tbody>
+                    </table>
+
+                    <table id="post_order_table">
+                        <thead>
+                            <tr>
+                                <th>Carnet</th>
+                                <th>Nombre</th>
+                                <th>Carpeta raíz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Agrega más filas según sea necesario -->
+                        </tbody>
+                    </table>
+
+
 
                 </div>
             </div>
-            <div class="log_buttons show_student_info">
-                <button class="log_button" id="log_in_bt" onclick="log_in()">Pre order</button>
-                <button class="log_button" id="log_in_bt" onclick="log_in()">In order</button>
-                <button class="log_button" id="log_in_bt" onclick="log_in()">Post Order</button>
+            <div>
+
+            </div>
+            <div class="log_buttons" id="show_student_info1">
+                <button class="log_button" id="log_in_bt" onclick="pre_order_table()">Pre order</button>
+                <button class="log_button" id="log_in_bt" onclick="in_order_table()">In order</button>
+                <button class="log_button" id="log_in_bt" onclick="post_order_table()">Post Order</button>
             </div>
             <input type="file" id="student_json" style="display: none;">
+
+            <div class="log_buttons" id="load_json_admin">
+                <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Buscar JSON</button>
+                <button class="log_button" id="log_in_bt" onclick="load_user()">Cargar información</button>
+            </div>
+        </div>
+        <div id='graph_image'>
+        </div>
+
+        <div id="part3">
+            <header id="header3">
+                <h1>GoDrive</h1>
+                <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+                <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
+                <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
+                <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a> -->
+            </header>
+            <div>
+                <h1 id="h1_part3">Bienvenido 202010770</h1>
+                <input type="text" placeholder="Ingresa la ruta" id="user_search">
+                <div id="file_ch">
+                    <div id="file_manager">
+
+                    </div>
+                    <div id="file_manager_buttons">                    
+                        <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Crear Carpetas</button>
+                        <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Eliminar Carpeta</button>
+                        <button class="log_button" id="log_in_bt" onclick="load_user()">Reporte Carpetas</button>
+                        <button class="log_button" id="log_in_bt" onclick="load_user()">Reporte Archivos</button>
+                        <button class="log_button" id="log_in_bt" onclick="load_user()">Subir Archivos</button>
+                        <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Cerrar Sesion</button>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
         <footer>
@@ -77,5 +150,13 @@
 
 </body>
 <script src="Fase2/main.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+<script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="main.js"></script>
 
 </html>
