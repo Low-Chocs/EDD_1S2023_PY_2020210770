@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Fase2/CSS/reset.css">
+    <link rel="stylesheet" href="./Fase2/CSS/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,200&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="Inicio">
+
+        <div id="part1">
+            <header id="header1">
+                <h1>GoDrive</h1>
+            </header>
+            <div class="login">
+                <div class="login_data">
+                    <h2 id="log_label">Inicio de sesión</h2>
+                    <input type="text" placeholder="Ingresa tu usuario" id="user_input">
+                    <input type="password" placeholder="Ingresa tu contraseña" id="pass_input">
+                    <div class="check">
+                        <input type="checkbox" id="check_pass" onclick="show_password()">
+                        <label id="check_pass_label">Ver Contraseña</label>
+                    </div>
+                </div> 
+            </div>
+            <div class="log_buttons">
+                <button class="log_button" id="log_in_bt" onclick="log_in()">Ingresar</button>
+            </div>
+        </div>
+
+        <div id="part2">
+            <header id="header2">
+                <a class="admin_link">Ver estudiantes</a>
+                <a class="admin_link">Árbol de estudiantes</a>
+                <a class="admin_link"  id="loading_json" onclick="load_user()">Carga masiva</a>
+                <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a>
+            </header>
+            <div class="login">
+                <div class="login_data show_student_info">
+                    <h2 id="log_label">Modulo de administrador</h2>
+                    <input type="text" placeholder="Ingresa tu usuario" id="user_input">
+                    <input type="password" placeholder="Ingresa tu contraseña" id="pass_input">
+                    <div class="check">
+                        <input type="checkbox" id="check_pass" onclick="show_password()">
+                        <label id="check_pass_label">Ver Contraseña</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="log_buttons show_student_info">
+                <button class="log_button" id="log_in_bt" onclick="log_in()">Pre order</button>
+                <button class="log_button" id="log_in_bt" onclick="log_in()">In order</button>
+                <button class="log_button" id="log_in_bt" onclick="log_in()">Post Order</button>
+            </div>
+            <input type="file" id="student_json" style="display: none;">
+        </div>
+
+        <footer>
+            <div class="profile_icon">
+                <a href="https://twitter.com/chocsita" target="_blank"><img src="Fase2/CSS/Images/twitter2.jpg"
+                        alt="Twitter" id="icon_twitter"></a>
+                <a href="https://www.youtube.com/@lonchocs8591" target="_blank"><img src="Fase2/CSS/Images/youtube2.png"
+                        alt="Youtube" class="icon"></a>
+                <a href="https://github.com/Low-Chocs" target="_blank"><img src="Fase2/CSS/Images/github.png"
+                        alt="Github" class="icon"></a>
+            </div>
+        </footer>
+    </div>
+
+</body>
+<script src="Fase2/main.js"></script>
+
+</html>

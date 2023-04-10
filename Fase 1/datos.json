@@ -1,0 +1,78 @@
+[
+    {
+      "nombre": "Juan Perez",
+      "carnet": "12345",
+      "password": "qwe123"
+    },
+    {
+      "nombre": "Ana Rodriguez",
+      "carnet": "56789",
+      "password": "asd456"
+    },
+    {
+      "nombre": "Pedro Garcia",
+      "carnet": "24680",
+      "password": "zxc789"
+    },
+    {
+      "nombre": "Maria Sanchez",
+      "carnet": "13579",
+      "password": "rty234"
+    },
+    {
+      "nombre": "Luisa Martinez",
+      "carnet": "97531",
+      "password": "fgh567"
+    },
+    {
+      "nombre": "Carlos Gonzalez",
+      "carnet": "80246",
+      "password": "vbn890"
+    },
+    {
+      "nombre": "Laura Ramirez",
+      "carnet": "46802",
+      "password": "yui345"
+    },
+    {
+      "nombre": "David Castro",
+      "carnet": "24680",
+      "password": "hjk678"
+    },
+    {
+      "nombre": "Sofia Torres",
+      "carnet": "13579",
+      "password": "poi123"
+    },
+    {
+      "nombre": "Josefina Perez",
+      "carnet": "97531",
+      "password": "lkj456"
+    },
+    {
+      "nombre": "Fernando Garcia",
+      "carnet": "80246",
+      "password": "mnb789"
+    },
+    {
+      "nombre": "Camila Diaz",
+      "carnet": "46802",
+      "password": "qaz234"
+    },
+    {
+      "nombre": "Oscar Ruiz",
+      "carnet": "24680",
+      "password": "wsx567"
+    },
+    {
+      "nombre": "Elena Lopez",
+      "carnet": "13579",
+      "password": "edc890"
+    },
+    {
+      "nombre": "Raul Perez",
+      "carnet": "97531",
+      "password": "rfv123"
+    }
+  ]
+  
