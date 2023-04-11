@@ -1,3 +1,183 @@
+
+
+// CLASE NODO 
+class Tnode {
+
+    constructor(folderName) {
+        this.folderName = folderName;
+        this.files = [];
+        this.children = []; // TODOS LOS NODOS HIJOS
+        this.id = null; // PARA GENERAR LA GRÁFICA
+    }
+}
+
+
+class Tree {
+    constructor() {
+        this.root = new Tnode('/');
+        this.root.id = 0;
+        this.size = 1; // Para generar los ids
+    }
+
+    insert(folderName, fatherPath) {
+        let newNode = new Tnode(folderName);
+        let fatherNode = this.getFolder(fatherPath);
+        if (fatherNode) {
+            let duplicateNode = fatherNode.children.find(node => node.folderName === folderName);
+            if (duplicateNode) {
+                alert("Ya existe un nodo con el mismo nombre");
+                return;
+            }
+            this.size += 1;
+            newNode.id = this.size;
+            fatherNode.children.push(newNode);
+        } else {
+            alert("Ruta no existe");
+        }
+    }
+
+
+    getFolder(path) {
+        // Padre sea una '/'
+        // console.log(path);
+        if (path == this.root.folderName) {
+            return this.root;
+        } else {
+            let temp = this.root;
+            let folders = path.split('/');
+            folders = folders.filter(str => str !== '');
+            let folder = null;
+            while (folders.length > 0) {
+                let currentFolder = folders.shift()
+                folder = temp.children.find(child => child.folderName == currentFolder);
+                if (typeof folder == 'undefined' || folder == null) {
+                    return null;
+                }
+                temp = folder;
+            }
+            return temp;
+        }
+    }
+
+
+
+    deleteFolder(folderPath) {
+        // Buscar el nodo de la carpeta a eliminar
+        let nodeToDelete = folderPath;
+        if (!nodeToDelete) {
+            console.log("La carpeta no existe");
+            return;
+        }
+
+        // Buscar el padre del nodo a eliminar
+        let currentNode = this.getFolder(folderPath);
+
+        // Eliminar el nodo del array de hijos del padre
+        currentNode.children = [];
+        let nuevaCadena = "";
+        for (let i = folderPath.length - 1; i >= 0; i--) {
+            if (folderPath[i] === '/') {
+                break;
+            }
+            nuevaCadena += folderPath[i];
+        }
+
+        let nuevaCadena2 = "";
+        let encontrado = false;
+
+        for (let i = folderPath.length - 1; i >= 0; i--) {
+            if (folderPath[i] === '/') {
+                if (!encontrado) {
+                    encontrado = true;
+                } else {
+                    break;
+                }
+            }
+            if (encontrado) {
+                if (folderPath[i] === ' ') {
+                    break;
+                }
+                nuevaCadena2 = folderPath[i] + nuevaCadena;
+            }
+        }
+
+        console.log(nuevaCadena2);
+        let palabraInvertida = nuevaCadena2.split("").reverse().join("");
+        let parentNode = this.getFolder(palabraInvertida);
+        let palabraInvertida2 = nuevaCadena.split("").reverse().join("");
+        console.log(nuevaCadena)
+        let actual = parentNode.children.indexOf(palabraInvertida2);
+        if (actual !== -1) {
+            parentNode.splice(indice, 1);
+          }
+
+        // console.log(divToDelete);
+        // console.log(prueba);
+        // divToDelete.remove();
+
+    }
+
+    graph() {
+        let nodes = "";
+        let connections = "";
+
+        let node = this.root;
+        let queue = [];
+        queue.push(node);
+        while (queue.length !== 0) {
+            let len = queue.length;
+            for (let i = 0; i < len; i++) {
+                let node = queue.shift();
+                nodes += `S_${node.id}[label="${node.folderName}"];\n`;
+                node.children.forEach(item => {
+                    connections += `S_${node.id} -> S_${item.id};\n`
+                    queue.push(item);
+                });
+            }
+        }
+        return 'node[shape="record"];\n' + nodes + '\n' + connections;
+    }
+
+    getHTML(path) {
+        let node = this.getFolder(path);
+        let code = "";
+        node.children.map(child => {
+            code += ` <div class="col-2 folder" onclick="go_to_file('${child.folderName}')" id="${path.replace('/', '') + child.folderName.replace('/', '')}">
+                        <img class="file_images"src="Fase2/CSS/Images/file.png"/>
+                        <p class="legend">${child.folderName}</p>
+                    </div>`
+        })
+        // console.log(node.files)
+        node.files.map(file => {
+            if (file.type === 'text/plain') {
+                let archivo = new Blob([file.content], file.type);
+                const url = URL.createObjectURL(archivo);
+                code += `
+                        <div class="col-2 folder">
+                        <img src="./imgs/file.png" width="100%"/>
+                        <p class="h6 text-center">
+                            <a href="${url}" download>
+                                ${file.name}
+                            </a>
+                        </p>
+                    </div>
+                `
+            } else {
+                code += ` <div class="col-2 folder">
+                        <img src="./imgs/file.png" width="100%"/>
+                        <p class="h6 text-center">
+                            <a href="${file.content}" download>
+                                ${file.name}
+                            </a>
+                        </p>
+                    </div>`
+            }
+        })
+        return code;
+    }
+}
+
+
 //BEGIN MOVIE AVL TREE
 class student_node {
     constructor(_name, _carnet, _password, _root_file) {
@@ -5,6 +185,7 @@ class student_node {
         this.carnet = _carnet;
         this.password = _password;
         this.root_file = _root_file;
+        this.file_tree = new Tree();
         this.left = null;
         this.right = null;
         this.height = 0;
@@ -213,7 +394,7 @@ class student_avl_tree {
         text += this.linking_nodes_dot(this.root);
         text += "}";
         d3.select("#graph_image").graphviz()
-        .renderDot(text)
+            .renderDot(text)
         return text
     }
 
@@ -248,25 +429,25 @@ class student_avl_tree {
 
 class Action_node {
     constructor(action, name, date, hour) {
-      this.action = action;
-      this.name = name;
-      this.date = date;
-      this.hour = hour;
-      this.prev = null;
-      this.next = null;
+        this.action = action;
+        this.name = name;
+        this.date = date;
+        this.hour = hour;
+        this.prev = null;
+        this.next = null;
     }
 }
 
-class Doubly_linked_list{
+class Doubly_linked_list {
     constructor() {
         this.head = null;
         this.tail = null;
         this.length = 0;
     }
 
-    insert(action, name, date, hour){
+    insert(action, name, date, hour) {
         new_action = new Action_node(action, name, date, hour);
-        if(this.length == 0){
+        if (this.length == 0) {
             this.head = new_action;
             this.tail = new_action;
         }
@@ -274,6 +455,7 @@ class Doubly_linked_list{
 }
 var student_tree = new student_avl_tree();
 student_tree.insert("John", 1, 1, "/");
+var current_student = new student_node();
 //END MOVIE AVL TREE
 function call_file_explorer() {
     document.getElementById("student_json").click();
@@ -398,8 +580,9 @@ function log_in() {
     }
     object = student_tree.find_student(user);
     console.log(object);
-    if(object != "NOT FOUND"){
-        if(object.password == password){
+    if (object != "NOT FOUND") {
+        if (object.password == password) {
+            current_student = object;
             login_to_user();
             return null;
         }
@@ -430,7 +613,7 @@ function admin_to_login() {
     log.style.display = "block";
 }
 
-function login_to_user(){
+function login_to_user() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
@@ -440,7 +623,7 @@ function login_to_user(){
     log.style.display = "none";
 }
 
-function user_to_login(){
+function user_to_login() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
@@ -450,3 +633,63 @@ function user_to_login(){
     log.style.display = "block";
 }
 
+function tree_graph_to_user() {
+    var log = document.getElementById("part1");
+    var admin_module = document.getElementById("part2");
+    var user_module = document.getElementById("part3");
+    var graph_tree = document.getElementById("part4");
+
+    admin_module.style.display = "none";
+    user_module.style.display = "block";
+    log.style.display = "none";
+    graph_tree.style.display = "none"
+}
+
+function user_to_tree_graph() {
+    var log = document.getElementById("part1");
+    var admin_module = document.getElementById("part2");
+    var user_module = document.getElementById("part3");
+    var graph_tree = document.getElementById("part4");
+
+    admin_module.style.display = "none";
+    user_module.style.display = "none";
+    log.style.display = "none";
+    graph_tree.style.display = "block"
+
+    showTreeGraph();
+}
+
+
+//Creating files
+function create_file() {
+    let folderName = document.getElementById('new_file').value;
+    let path = document.getElementById("user_search").value;
+    console.log(folderName, path);
+    current_student.file_tree.insert(folderName, path);
+    $("#file_manager").html(current_student.file_tree.getHTML(path))
+}
+
+
+function go_to_file(folderName) {
+    let path = document.getElementById('user_search').value;
+    let currentPath = path == '/' ? path + folderName : path + "/" + folderName;
+    $('#user_search').val(currentPath);
+    $('#file_manager').html(current_student.file_tree.getHTML(currentPath));
+}
+
+function go_to_initial() {
+    document.getElementById('user_search').value = "/";
+    $('#file_manager').html(current_student.file_tree.getHTML("/"))
+}
+
+function delete_folder() {
+    current_student.file_tree.deleteFolder(document.getElementById("user_search").value);
+    current_student.file_tree.getHTML("/");
+    go_to_initial();
+}
+
+function showTreeGraph() {
+    let url = 'https://quickchart.io/graphviz?graph=';
+    let body = `digraph G { ${current_student.file_tree.graph()} }`
+    $("#image_part4").attr("src", url + body);
+}
