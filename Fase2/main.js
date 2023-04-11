@@ -581,6 +581,7 @@ function load_user() {
         console.log(student_tree.create_dot());
     };
     reader.readAsText(file);
+    alert("Se ha cargado la información");
 
 
 }
