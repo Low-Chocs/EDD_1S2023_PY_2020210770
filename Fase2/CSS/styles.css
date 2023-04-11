@@ -202,6 +202,9 @@ a:active{
 #part4{
     display: none;
 }
+#part5{
+    display: none;
+}
 #graph_image{
     margin-top:85px;
     display: none;
@@ -285,4 +288,8 @@ a:active{
 .image_part4{
     margin-top: 100px;
 }
+.image_part5{
+    margin-top: 100px;
+}
+
 

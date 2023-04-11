@@ -1,4 +1,4 @@
-
+var global_count = 1;
 
 // CLASE NODO 
 class Tnode {
@@ -25,7 +25,12 @@ class Tree {
         if (fatherNode) {
             let duplicateNode = fatherNode.children.find(node => node.folderName === folderName);
             if (duplicateNode) {
-                alert("Ya existe un nodo con el mismo nombre");
+                alert("Ya existe un nodo con el mismo nombre se creara una copia");
+                newNode.folderName += "(Copia Estructuras "+global_count+")";
+                this.size += 1;
+                newNode.id = this.size;
+                fatherNode.children.push(newNode);
+                global_count++;
                 return;
             }
             this.size += 1;
@@ -186,6 +191,7 @@ class student_node {
         this.password = _password;
         this.root_file = _root_file;
         this.file_tree = new Tree();
+        this.action_list = new Doubly_linked_list();
         this.left = null;
         this.right = null;
         this.height = 0;
@@ -428,9 +434,8 @@ class student_avl_tree {
 }
 
 class Action_node {
-    constructor(action, name, date, hour) {
+    constructor(action, date, hour) {
         this.action = action;
-        this.name = name;
         this.date = date;
         this.hour = hour;
         this.prev = null;
@@ -442,19 +447,45 @@ class Doubly_linked_list {
     constructor() {
         this.head = null;
         this.tail = null;
-        this.length = 0;
+        this.size = 0;
     }
 
-    insert(action, name, date, hour) {
-        new_action = new Action_node(action, name, date, hour);
-        if (this.length == 0) {
+    insert(action, date, hour) {
+        var new_action = new Action_node(action,date, hour);
+        if (this.size == 0) {
             this.head = new_action;
             this.tail = new_action;
+            this.size++;
+            return;
         }
+        this.tail.next = new_action;
+        this.tail = new_action;
+        this.head.prev = new_action;
+        this.size++;
+    }
+
+    show(){
+        var text = "digraph G {"
+        text += "rankdir=\"LR\";"
+        var action = this.head;
+        var count = 0;
+        for(var i = 0; i < this.size; i++){
+            text += "\n n"+ count + "[shape=\"box\" label = \""+action.action+" \n Fecha: "+action.date+"  \n Hora: "+action.hour+" \"];";
+            action = action.next;
+            count++;
+        }
+        count = 0;
+        for(var i = 0; i < this.size - 1; i++){
+            text += "\nn"+ count + "-> n"+ (count + 1) + ";";
+            count++;
+        }
+        text += "\nn"+0+"-> n"+ (this.size - 1 ) + ";";
+        text += "\n}"
+
+        return text;
     }
 }
 var student_tree = new student_avl_tree();
-student_tree.insert("John", 1, 1, "/");
 var current_student = new student_node();
 //END MOVIE AVL TREE
 function call_file_explorer() {
@@ -597,7 +628,6 @@ function login_to_admin() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
-
     admin_module.style.display = "block";
     user_module.style.display = "none";
     log.style.display = "none";
@@ -607,30 +637,37 @@ function admin_to_login() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
-
+    var graph_tree = document.getElementById("part4");
     admin_module.style.display = "none";
     user_module.style.display = "none";
     log.style.display = "block";
+    graph_tree.style.display = "none";
+    
 }
 
 function login_to_user() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
-
+    var graph_tree = document.getElementById("part4");
+    var graph_div = document.getElementById('graph_image');
     admin_module.style.display = "none";
     user_module.style.display = "block";
     log.style.display = "none";
+    graph_tree.style.display = "none";
+    graph_div.style.display = "none";
+    document.getElementById("h1_part3").innerHTML = "Bienvenido: " + current_student.carnet;
 }
 
 function user_to_login() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
-
+    var graph_tree = document.getElementById("part4");
     admin_module.style.display = "none";
     user_module.style.display = "none";
     log.style.display = "block";
+    graph_tree.style.display = "none";
 }
 
 function tree_graph_to_user() {
@@ -638,11 +675,10 @@ function tree_graph_to_user() {
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
     var graph_tree = document.getElementById("part4");
-
     admin_module.style.display = "none";
     user_module.style.display = "block";
     log.style.display = "none";
-    graph_tree.style.display = "none"
+    graph_tree.style.display = "none";
 }
 
 function user_to_tree_graph() {
@@ -650,15 +686,39 @@ function user_to_tree_graph() {
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
     var graph_tree = document.getElementById("part4");
-
     admin_module.style.display = "none";
     user_module.style.display = "none";
     log.style.display = "none";
-    graph_tree.style.display = "block"
-
+    graph_tree.style.display = "block";
     showTreeGraph();
 }
 
+function user_to_list() {
+    var log = document.getElementById("part1");
+    var admin_module = document.getElementById("part2");
+    var user_module = document.getElementById("part3");
+    var graph_tree = document.getElementById("part4");
+    var graph_list = document.getElementById("part5");
+    admin_module.style.display = "none";
+    user_module.style.display = "none";
+    log.style.display = "none";
+    graph_tree.style.display = "none";
+    graph_list.style.display = "block";
+    showListGraph();
+    console.log("HE ENTRADO")
+}
+function list_to_user() {
+    var log = document.getElementById("part1");
+    var admin_module = document.getElementById("part2");
+    var user_module = document.getElementById("part3");
+    var graph_tree = document.getElementById("part4");
+    var graph_list = document.getElementById("part5");
+    admin_module.style.display = "none";
+    user_module.style.display = "block";
+    log.style.display = "none";
+    graph_tree.style.display = "none";
+    graph_list.style.display = "none";
+}
 
 //Creating files
 function create_file() {
@@ -666,7 +726,13 @@ function create_file() {
     let path = document.getElementById("user_search").value;
     console.log(folderName, path);
     current_student.file_tree.insert(folderName, path);
-    $("#file_manager").html(current_student.file_tree.getHTML(path))
+    $("#file_manager").html(current_student.file_tree.getHTML(path));
+    const date = new Date();
+    const actual_date = date.toLocaleDateString();
+    const actual_time = date.toLocaleTimeString();
+    current_student.action_list.insert("Accion: Se creo carpeta: "+folderName, actual_date, actual_time);
+    current_student.action_list.show();
+
 }
 
 
@@ -686,10 +752,17 @@ function delete_folder() {
     current_student.file_tree.deleteFolder(document.getElementById("user_search").value);
     current_student.file_tree.getHTML("/");
     go_to_initial();
+    current_student.action_list.insert("Accion: Se eliminio carpeta: "+document.getElementById("user_search").value, actual_date, actual_time);
+    current_student.action_list.show();
 }
 
 function showTreeGraph() {
     let url = 'https://quickchart.io/graphviz?graph=';
     let body = `digraph G { ${current_student.file_tree.graph()} }`
     $("#image_part4").attr("src", url + body);
+}
+
+function showListGraph(){
+    let url = 'https://quickchart.io/graphviz?graph=' + current_student.action_list.show();
+    $("#image_part5").attr("src", url); 
 }
