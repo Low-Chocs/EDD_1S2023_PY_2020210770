@@ -193,6 +193,22 @@ a:active{
     align-self: center;
 }
 
+#hash_table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #hash_table th,
+  #hash_table td {
+    padding: 8px;
+    border: 1px solid black;
+  }
+  
+  #hash_table tbody {
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+
 #part2{
     display: none;
 }
@@ -208,6 +224,12 @@ a:active{
 #graph_image{
     margin-top:85px;
     display: none;
+}
+
+#hash_info{
+    margin-top:55px;
+    display: none;
+    margin-bottom: 30px;
 }
 
 #load_json_admin{

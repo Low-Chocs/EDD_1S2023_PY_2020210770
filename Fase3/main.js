@@ -1,5 +1,166 @@
 var global_count = 1;
 
+function hash(string) {
+    const utf8 = new TextEncoder().encode(string);
+    return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray
+            .map((bytes) => bytes.toString(16).padStart(2, '0'))
+            .join('');
+        return hashHex;
+    });
+}
+
+
+
+//Hash table
+
+class HashNode {
+    constructor(carnet, nombre, password) {
+        this.carnet = carnet;
+        this.nombre = nombre;
+        this.password = password;
+    }
+}
+
+// CLASE TABLA HASH
+class HashTable {
+
+    constructor() {
+        this.table = new Array(7);
+        this.capacidad = 7;
+        this.espaciosUsados = 0;
+    }
+
+    insert(carnet, nombre, password) {
+        let indice = this.calcularIndice(carnet);
+        let nodoNuevo = new HashNode(carnet, nombre, password);
+        if (indice < this.capacidad) {
+            if (this.table[indice] == null) {
+                this.table[indice] = nodoNuevo;
+                this.espaciosUsados++;
+            } else {
+                let contador = 1;
+                indice = this.recalcularIndice(carnet, contador);
+                while (this.table[indice] != null) {
+                    contador++;
+                    indice = this.recalcularIndice(carnet, contador);
+                }
+                this.table[indice] = nodoNuevo;
+                this.espaciosUsados++;
+            }
+            this.checkCapacidad();
+        }
+    }
+
+    calcularIndice(carnet) {
+        let strCarnet = carnet.toString();
+        let sum = 0;
+        for (let i = 0; i < strCarnet.length; i++) {
+            sum += strCarnet.charCodeAt(i);
+        }
+        let posicion = sum % this.capacidad;
+        return posicion;
+    }
+
+
+
+
+    recalcularIndice(carnet, contador) {
+        let indice = this.calcularIndice(carnet) + (contador * contador);
+        let nuevo = this.nuevoIndice(indice);
+        return nuevo;
+    }
+
+    nuevoIndice(indice) {
+        let pos = 0;
+        if (indice < this.capacidad) {
+            pos = indice;
+        } else {
+            pos = indice - this.capacidad;
+            pos = this.nuevoIndice(pos);
+        }
+        return pos;
+    }
+
+    checkCapacidad() {
+        const utilizacion = this.capacidad * 0.75;
+        if (this.espaciosUsados > utilizacion) {
+            this.capacidad = this.generarNuevaCapacidad();
+            this.espaciosUsados = 0;
+            const temp = this.table;
+            this.table = new Array(this.capacidad);
+            temp.forEach(std => {
+                this.insert(std.carnet, std.nombre, std.password);
+            });
+        }
+    }
+
+    generarNuevaCapacidad() {
+        let num = this.capacidad + 1;
+        while (!this.#esPrimo(num)) {
+            num++;
+        }
+        return num;
+    }
+
+    #esPrimo(num) {
+        if (num <= 1) { return false }
+        if (num === 2) { return true }
+        if (num % 2 === 0) { return false }
+        for (let i = 3; i <= Math.sqrt(num); i += 2) {
+            if (num % i === 0) { return false };
+        }
+        return true;
+    }
+
+    search(carnet) {
+        let indice = this.calcularIndice(carnet);
+        if (indice < this.capacidad) {
+            try {
+                if (this.table[indice] != null && this.table[indice].carnet === carnet) {
+                    return this.table[indice];
+                } else {
+                    let contador = 1;
+                    indice = this.recalcularIndice(carent, contador);
+                    while (this.table[indice] != null) {
+                        contador++;
+                        indice = this.recalcularIndice(carent, contador);
+                        if (this.table[indice].carnet === carnet) {
+                            return this.table[indice].carnet;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.log("Error ", err);
+            }
+        }
+        return null;
+    }
+
+    async show() {
+        for (let i = 0; i < this.table.length; i++) {
+            if (this.table[i] != null) {
+
+                const hashString = await hash(this.table[i].password);
+                $('#hash_table tbody').append(
+                    `<tr>
+                        <th>${this.table[i].carnet}</th>
+                        <th>${this.table[i].nombre}</th>
+                        <th>${hashString}</th>
+                    </tr>`
+                )
+                console.log(this.table[i], hashString);
+            }
+        }
+    }
+
+
+}
+
+
+
+
 // CLASE NODO 
 class Tnode {
 
@@ -26,7 +187,7 @@ class Tree {
             let duplicateNode = fatherNode.children.find(node => node.folderName === folderName);
             if (duplicateNode) {
                 alert("Ya existe un nodo con el mismo nombre se creara una copia");
-                newNode.folderName += "(Copia Estructuras "+global_count+")";
+                newNode.folderName += "(Copia Estructuras " + global_count + ")";
                 this.size += 1;
                 newNode.id = this.size;
                 fatherNode.children.push(newNode);
@@ -114,7 +275,7 @@ class Tree {
         let actual = parentNode.children.indexOf(palabraInvertida2);
         if (actual !== -1) {
             parentNode.splice(indice, 1);
-          }
+        }
 
         // console.log(divToDelete);
         // console.log(prueba);
@@ -318,6 +479,7 @@ class student_avl_tree {
                     <th>${actual_root.root_file}</th>
                 </tr>`
             )
+
             this.pre_order(actual_root.left);
             this.pre_order(actual_root.right);
         }
@@ -327,6 +489,8 @@ class student_avl_tree {
         //Case base
         if (actual_root != null) {
             this.in_order(actual_root.left);
+
+            student_hash_table.insert(actual_root.carnet, actual_root.name, actual_root.password);
             $('#in_order_table tbody').append(
                 `<tr>
                     <th>${actual_root.carnet}</th>
@@ -334,7 +498,12 @@ class student_avl_tree {
                     <th>${actual_root.root_file}</th>
                 </tr>`
             )
+
+
+
             this.in_order(actual_root.right);
+
+
         }
     }
 
@@ -361,6 +530,7 @@ class student_avl_tree {
                     <th>${actual_root.root_file}</th>
                 </tr>`
             )
+
         }
     }
 
@@ -451,7 +621,7 @@ class Doubly_linked_list {
     }
 
     insert(action, date, hour) {
-        var new_action = new Action_node(action,date, hour);
+        var new_action = new Action_node(action, date, hour);
         if (this.size == 0) {
             this.head = new_action;
             this.tail = new_action;
@@ -464,22 +634,22 @@ class Doubly_linked_list {
         this.size++;
     }
 
-    show(){
+    show() {
         var text = "digraph G {"
         text += "rankdir=\"LR\";"
         var action = this.head;
         var count = 0;
-        for(var i = 0; i < this.size; i++){
-            text += "\n n"+ count + "[shape=\"box\" label = \""+action.action+" \n Fecha: "+action.date+"  \n Hora: "+action.hour+" \"];";
+        for (var i = 0; i < this.size; i++) {
+            text += "\n n" + count + "[shape=\"box\" label = \"" + action.action + " \n Fecha: " + action.date + "  \n Hora: " + action.hour + " \"];";
             action = action.next;
             count++;
         }
         count = 0;
-        for(var i = 0; i < this.size - 1; i++){
-            text += "\nn"+ count + "-> n"+ (count + 1) + ";";
+        for (var i = 0; i < this.size - 1; i++) {
+            text += "\nn" + count + "-> n" + (count + 1) + ";";
             count++;
         }
-        text += "\nn"+0+"-> n"+ (this.size - 1 ) + ";";
+        text += "\nn" + 0 + "-> n" + (this.size - 1) + ";";
         text += "\n}"
 
         return text;
@@ -487,6 +657,7 @@ class Doubly_linked_list {
 }
 var student_tree = new student_avl_tree();
 var current_student = new student_node();
+var student_hash_table = new HashTable();
 //END MOVIE AVL TREE
 function call_file_explorer() {
     document.getElementById("student_json").click();
@@ -499,8 +670,25 @@ function load_user_interface() {
     var show_user_module1 = document.getElementById("show_student_info1");
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
+    var hash_div = document.getElementById('hash_info');
 
     load_json_module.style.display = "flex";
+    show_user_module.style.display = "none";
+    show_user_module1.style.display = "none";
+    graph_div.style.display = "none";
+    hash_div.style.display = "none";
+}
+
+//BEGIN: Json load for users
+function hash_info_interface() {
+    var show_user_module = document.getElementById("show_student_info");
+    var show_user_module1 = document.getElementById("show_student_info1");
+    var load_json_module = document.getElementById("load_json_admin");
+    var graph_div = document.getElementById('graph_image');
+    var hash_div = document.getElementById('hash_info');
+
+    hash_div.style.display = "flex";
+    load_json_module.style.display = "none";
     show_user_module.style.display = "none";
     show_user_module1.style.display = "none";
     graph_div.style.display = "none";
@@ -511,11 +699,13 @@ function load_graph_interface() {
     var show_user_module1 = document.getElementById("show_student_info1");
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
+    var hash_div = document.getElementById('hash_info');
 
     load_json_module.style.display = "none";
     show_user_module.style.display = "none";
     show_user_module1.style.display = "none";
     graph_div.style.display = "block";
+    hash_div.style.display = "none";
 }
 
 function show_user_interface() {
@@ -523,11 +713,13 @@ function show_user_interface() {
     var show_user_module1 = document.getElementById("show_student_info1");
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
+    var hash_div = document.getElementById('hash_info');
 
     load_json_module.style.display = "none";
     show_user_module.style.display = "flex";
     show_user_module1.style.display = "flex";
     graph_div.style.display = "none";
+    hash_div.style.display = "none";
 }
 function pre_order_table() {
     var pre_table = document.getElementById("pre_order_table");
@@ -578,7 +770,8 @@ function load_user() {
         student_tree.pre_order(student_tree.root);
         student_tree.in_order(student_tree.root);
         student_tree.post_order(student_tree.root);
-        console.log(student_tree.create_dot());
+
+        student_hash_table.show();
     };
     reader.readAsText(file);
     alert("Se ha cargado la información");
@@ -639,11 +832,13 @@ function admin_to_login() {
     var admin_module = document.getElementById("part2");
     var user_module = document.getElementById("part3");
     var graph_tree = document.getElementById("part4");
+    var hash_div = document.getElementById('hash_info');
     admin_module.style.display = "none";
     user_module.style.display = "none";
     log.style.display = "block";
     graph_tree.style.display = "none";
-    
+    hash_div.style.display = "none";
+
 }
 
 function login_to_user() {
@@ -731,7 +926,7 @@ function create_file() {
     const date = new Date();
     const actual_date = date.toLocaleDateString();
     const actual_time = date.toLocaleTimeString();
-    current_student.action_list.insert("Accion: Se creo carpeta: "+folderName, actual_date, actual_time);
+    current_student.action_list.insert("Accion: Se creo carpeta: " + folderName, actual_date, actual_time);
     current_student.action_list.show();
 
 }
@@ -753,7 +948,7 @@ function delete_folder() {
     current_student.file_tree.deleteFolder(document.getElementById("user_search").value);
     current_student.file_tree.getHTML("/");
     go_to_initial();
-    current_student.action_list.insert("Accion: Se eliminio carpeta: "+document.getElementById("user_search").value, actual_date, actual_time);
+    current_student.action_list.insert("Accion: Se eliminio carpeta: " + document.getElementById("user_search").value, actual_date, actual_time);
     current_student.action_list.show();
 }
 
@@ -763,7 +958,7 @@ function showTreeGraph() {
     $("#image_part4").attr("src", url + body);
 }
 
-function showListGraph(){
+function showListGraph() {
     let url = 'https://quickchart.io/graphviz?graph=' + current_student.action_list.show();
-    $("#image_part5").attr("src", url); 
+    $("#image_part5").attr("src", url);
 }

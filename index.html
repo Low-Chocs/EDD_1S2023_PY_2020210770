@@ -40,6 +40,7 @@
             <header id="header2">
                 <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
                 <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
+                <a class="admin_link" id="loading_json" onclick=" hash_info_interface()">Hash Table</a>
                 <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
                 <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a>
             </header>
@@ -104,71 +105,92 @@
                 <button class="log_button" id="log_in_bt" onclick="load_user()">Cargar información</button>
             </div>
         </div>
+
         <div id='graph_image'>
         </div>
 
-        <div id="part3">
-            <header id="header3">
-                <h1>GoDrive</h1>
-                <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+        <div id="hash_info">
+
+                <table id="hash_table" >
+                    <thead>
+                        <tr>
+                            <th>Carnet</th>
+                            <th>Nombre</th>
+                            <th>Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Agrega más filas según sea necesario -->
+                    </tbody>
+                </table>
+
+        </div>
+    </div>
+
+
+
+    <div id="part3">
+        <header id="header3">
+            <h1>GoDrive</h1>
+            <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
                 <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
                 <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
                 <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a> -->
-            </header>
-            <div>
-                <h1 id="h1_part3">Bienvenido 202010770</h1>
-                <input type="text" placeholder="Ingresa la ruta" id="user_search" value="/">
-                <div id="file_ch">
-                    <div id="file_manager">
+        </header>
+        <div>
+            <h1 id="h1_part3">Bienvenido 202010770</h1>
+            <input type="text" placeholder="Ingresa la ruta" id="user_search" value="/">
+            <div id="file_ch">
+                <div id="file_manager">
 
-                    </div>
-                    <div id="file_manager_buttons">       
-                        <input type="text" placeholder="Ingresa el nombre de la carpeta" id="new_file" >             
-                        <button class="log_button" onclick="create_file()">Crear Carpeta</button>
-                        <button class="log_button" onclick="delete_folder()">Eliminar Carpeta</button>
-                        <button class="log_button" onclick="go_to_initial()">Inicio</button>
-                        <button class="log_button" onclick="user_to_tree_graph()">Reporte Carpetas</button>
-                        <button class="log_button" onclick="user_to_list()">Reporte Archivos</button>
-                        <button class="log_button">Subir Archivos</button>
-                        <button class="log_button" id="close_ses" onclick="user_to_login()">Cerrar Sesion</button>
-                    </div>
-
+                </div>
+                <div id="file_manager_buttons">
+                    <input type="text" placeholder="Ingresa el nombre de la carpeta" id="new_file">
+                    <button class="log_button" onclick="create_file()">Crear Carpeta</button>
+                    <button class="log_button" onclick="delete_folder()">Eliminar Carpeta</button>
+                    <button class="log_button" onclick="go_to_initial()">Inicio</button>
+                    <button class="log_button" onclick="user_to_tree_graph()">Reporte Carpetas</button>
+                    <button class="log_button" onclick="user_to_list()">Reporte Archivos</button>
+                    <button class="log_button">Subir Archivos</button>
+                    <button class="log_button" id="close_ses" onclick="user_to_login()">Cerrar Sesion</button>
                 </div>
 
             </div>
-        </div>
 
-        <div id="part4">
-                <h1>GoDrive</h1>
-                <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+        </div>
+    </div>
+
+    <div id="part4">
+        <h1>GoDrive</h1>
+        <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
                 <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
                 <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
                 <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a> -->
-            <img id="image_part4">
-            <button class="log_button"  onclick="tree_graph_to_user()">Back</button>
-        
-        </div>
+        <img id="image_part4">
+        <button class="log_button" onclick="tree_graph_to_user()">Back</button>
 
-        <div id="part5">
-            <h1>GoDrive</h1>
-            <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+    </div>
+
+    <div id="part5">
+        <h1>GoDrive</h1>
+        <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
             <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
             <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
             <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a> -->
         <img id="image_part5">
-        <button class="log_button"  onclick="list_to_user()">Back</button>
-    
+        <button class="log_button" onclick="list_to_user()">Back</button>
+
     </div>
-        <footer>
-            <div class="profile_icon">
-                <a href="https://twitter.com/chocsita" target="_blank"><img src="Fase2/CSS/Images/twitter2.jpg"
-                        alt="Twitter" id="icon_twitter"></a>
-                <a href="https://www.youtube.com/@lonchocs8591" target="_blank"><img src="Fase2/CSS/Images/youtube2.png"
-                        alt="Youtube" class="icon"></a>
-                <a href="https://github.com/Low-Chocs" target="_blank"><img src="Fase2/CSS/Images/github.png"
-                        alt="Github" class="icon"></a>
-            </div>
-        </footer>
+    <footer>
+        <div class="profile_icon">
+            <a href="https://twitter.com/chocsita" target="_blank"><img src="Fase2/CSS/Images/twitter2.jpg"
+                    alt="Twitter" id="icon_twitter"></a>
+            <a href="https://www.youtube.com/@lonchocs8591" target="_blank"><img src="Fase2/CSS/Images/youtube2.png"
+                    alt="Youtube" class="icon"></a>
+            <a href="https://github.com/Low-Chocs" target="_blank"><img src="Fase2/CSS/Images/github.png" alt="Github"
+                    class="icon"></a>
+        </div>
+    </footer>
     </div>
 
 </body>
@@ -180,6 +202,6 @@
 <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
 <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script src="main.js"></script>
+
 
 </html>
