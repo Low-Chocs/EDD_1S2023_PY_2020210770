@@ -33,5 +33,9 @@
 1. Tree -> Para el manejo de ficheros es el arbol multicamino
 2. student_avl_tree -> La que lleva el control de los estudiantes por medio de un arbol avl
 3. Doubly_linked_list -> Sirve para la lista circular de acciones
+4. Block -> Sirve para crear un bloque dentro del blockchain
+5. Blockchain -> Sirve para almacenar los mensajes
+6. Hash -> Funciona para poder almacenar el elemento en la tabla hash.
+7. Hash_table -> Funciona como la tabla hash
 
 *Cada una de las clases cuenta con métodos de graficación. 
