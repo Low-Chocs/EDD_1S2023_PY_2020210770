@@ -38,9 +38,10 @@
 
         <div id="part2">
             <header id="header2">
-                <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
-                <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
+                <a class="admin_link" onclick="show_user_interface()">Estudiantes</a>
+                <a class="admin_link" onclick="load_graph_interface()">Árbol</a>
                 <a class="admin_link" id="loading_json" onclick=" hash_info_interface()">Hash Table</a>
+                <a class="admin_link" id="loading_json" onclick="blockchain_info_interface()">Block</a>
                 <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
                 <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a>
             </header>
@@ -90,6 +91,7 @@
 
                 </div>
             </div>
+
             <div>
 
             </div>
@@ -98,35 +100,44 @@
                 <button class="log_button" id="log_in_bt" onclick="in_order_table()">In order</button>
                 <button class="log_button" id="log_in_bt" onclick="post_order_table()">Post Order</button>
             </div>
+
             <input type="file" id="student_json" style="display: none;">
 
             <div class="log_buttons" id="load_json_admin">
                 <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Buscar JSON</button>
                 <button class="log_button" id="log_in_bt" onclick="load_user()">Cargar información</button>
 
-                <div class="mt-5">
-                    <h3 class="text-center">
-                        <button class="btn btn-warning" onclick="getBlock(0)"> Mostrar Nodo Inicial</button>
-                    </h3>
-                    <hr />
-                    <div class="row">
-                        <div class="col-2">
-                            <button class="btn btn-danger w-100" onclick="getBlock(-1)">
-                                << Anterior</button>
-                        </div>
-                        <div class="col-8" id="show-block">
-    
-                        </div>
-                        <div class="col-2">
-                            <button class="btn btn-danger w-100" onclick="getBlock(1)"> Siguiente >></button>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
         </div>
 
         <div id='graph_image'>
+        </div>
+
+        <div class="log_buttons" style= "margin-top: 100px; display: none;" id="blockchain_info" >
+            <div class="mt-5">
+                <h3 class="text-center">
+                    <button class="btn btn-warning log_button" onclick="getBlock(0)"> Mostrar Nodo Inicial</button>
+                    <button class="log_button">Graficar</button>
+                </h3>
+                <hr />
+                <div class="row">
+                    <div class="col-2">
+                        <button class="btn btn-danger w-100 log_button" onclick="getBlock(-1)">
+                            << Anterior</button>
+                    </div>
+                    <div class="col-8" id="show-block">
+
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-danger w-100 log_button" onclick="getBlock(1)"> Siguiente >></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id='graph_blockchain'>
+            </div>
         </div>
 
         <div id="hash_info">

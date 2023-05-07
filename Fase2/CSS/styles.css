@@ -357,6 +357,12 @@ a:active{
     margin-top: 100px;
 }
 
+.list_group{
+    width: 100%; 
+    height: 100%;
+
+}
+
 .left_item{
     text-align: left;
 }
@@ -365,3 +371,9 @@ a:active{
 .right_item{
     text-align: right;
 }
+
+.list-group-item{
+    margin-left: 10px;
+    margin-top: 20px;
+}
+

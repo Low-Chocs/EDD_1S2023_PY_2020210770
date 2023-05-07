@@ -97,18 +97,18 @@ class BlockChain {
             while (temp !== null) {
                 if (String(temp.receiver) === String(transmitter)) {
                     if (String(temp.transmitter) === String(receiver)) {
-                        msgs += `<li class="list-group-item class="left_item"">${temp.message}</li>`;
+                        msgs += `<li class="list-group-item left_item">${temp.message}</li>`;
                     }
                 } else if (String(temp.transmitter) === String(transmitter)) {
                     if (String(temp.receiver) === String(receiver)) {
-                        msgs += `<li class="right_item">${temp.message}</li>`;
+                        msgs += `<li class="list-group-item right_item">${temp.message}</li>`;
                     }
                 }
                 temp = temp.next;
             }
             if (msgs) {
                 return `
-                    <ul class="list-group">
+                    <ul class="list-group" style = "width: 95%;"  >
                         ${msgs}
                     </ul>
                 `;
@@ -166,6 +166,32 @@ class BlockChain {
         return "";
     }
 
+    show_all(){
+
+        let text = "digraph G { \nnode[shape = rec];";
+            
+        if (this.head) {
+            let temp = this.head;
+            while (temp !== null) {
+                text += "\nS"+temp.index+"[label=\"TimeStamp = "+temp.getFormatDate() +"\"\n+\" Emisor: "+temp.transmitter+ "\"\n+\" Receptor: "+ temp.receiver +"\"\n+\" Previous: "+ temp.previusHash +"\"];";
+                temp = temp.next;
+            }
+        }
+
+        if (this.head) {
+            let temp2 = this.head;
+            while (temp2.next !== null) {
+                text += "\nS"+temp2.index+"-> S"+temp2.next.index;
+                temp2 = temp2.next;
+            }
+        }
+        text += "\n}"
+        console.log(text);
+        d3.select("#graph_blockchain").graphviz()
+            .renderDot(text)
+        return text;
+    }
+
 
 }
 
@@ -186,22 +212,29 @@ async function sendMessage() {
     let receiver = $('#transmitter').val();
 
 
+    if(receiver == 0){
+        alert("Seleccione receptor");
+        return;
+    }
+
     if (transmitter && receiver) {
 
 
 
         let msgt = $('#msg-transmitter').val();
+        if(msgt == ""){
+            alert("No es posible enviar mensajes en blanco");
+            return;
+        }
   
         await blockChain.insert(transmitter, receiver, msgt);
         $('#msg-transmitter').val();
 
-
-        alert("Mensaje enviado");
         // ACTUALIZAR CHATS
         updateChats();
-    } else {
-        alert("No ha seleccionado Receptop o Emisor");
-    }
+        blockChain.show_all();
+    } 
+    
 }
 
 
@@ -216,7 +249,7 @@ function getBlock(index) {
 
         if (index < 0) { // MOSTRAR EL ANTERIOR
             if (currentBlock - 1 < 0) {
-                alert("No existen elementos anteriores");
+                alert("No mas anteriores aqui");
             } else {
                 let html = blockChain.blockReport(currentBlock - 1);
                 if (html) {
@@ -910,12 +943,14 @@ function load_user_interface() {
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
     var hash_div = document.getElementById('hash_info');
+    var blockchain_div = document.getElementById('blockchain_info');
 
     load_json_module.style.display = "flex";
     show_user_module.style.display = "none";
     show_user_module1.style.display = "none";
     graph_div.style.display = "none";
     hash_div.style.display = "none";
+    blockchain_div.style.display = "none";
 }
 
 //BEGIN: Json load for users
@@ -925,11 +960,29 @@ function hash_info_interface() {
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
     var hash_div = document.getElementById('hash_info');
+    var blockchain_div = document.getElementById('blockchain_info');
 
     hash_div.style.display = "flex";
     load_json_module.style.display = "none";
     show_user_module.style.display = "none";
     show_user_module1.style.display = "none";
+    blockchain_div.style.display = "none";
+    graph_div.style.display = "none";
+}
+
+function blockchain_info_interface() {
+    var show_user_module = document.getElementById("show_student_info");
+    var show_user_module1 = document.getElementById("show_student_info1");
+    var load_json_module = document.getElementById("load_json_admin");
+    var graph_div = document.getElementById('graph_image');
+    var hash_div = document.getElementById('hash_info');
+    var blockchain_div = document.getElementById('blockchain_info');
+
+    blockchain_div.style.display = "block";
+    load_json_module.style.display = "none";
+    show_user_module.style.display = "none";
+    show_user_module1.style.display = "none";
+    hash_div.style.display = "none";
     graph_div.style.display = "none";
 }
 
@@ -939,12 +992,14 @@ function load_graph_interface() {
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
     var hash_div = document.getElementById('hash_info');
+    var blockchain_div = document.getElementById('blockchain_info');
 
     load_json_module.style.display = "none";
     show_user_module.style.display = "none";
     show_user_module1.style.display = "none";
     graph_div.style.display = "block";
     hash_div.style.display = "none";
+    blockchain_div.style.display = "none";
 }
 
 function show_user_interface() {
@@ -953,12 +1008,14 @@ function show_user_interface() {
     var load_json_module = document.getElementById("load_json_admin");
     var graph_div = document.getElementById('graph_image');
     var hash_div = document.getElementById('hash_info');
-
+    var blockchain_div = document.getElementById('blockchain_info');
+    
     load_json_module.style.display = "none";
     show_user_module.style.display = "flex";
     show_user_module1.style.display = "flex";
     graph_div.style.display = "none";
     hash_div.style.display = "none";
+    blockchain_div.style.display = "none";
 }
 function pre_order_table() {
     var pre_table = document.getElementById("pre_order_table");
@@ -1011,6 +1068,7 @@ function load_user() {
         student_tree.post_order(student_tree.root);
 
         student_hash_table.show();
+        student_tree.create_dot();
 
 
     };
@@ -1074,11 +1132,13 @@ function admin_to_login() {
     var user_module = document.getElementById("part3");
     var graph_tree = document.getElementById("part4");
     var hash_div = document.getElementById('hash_info');
+    var blockchain_div = document.getElementById('blockchain_info');
     admin_module.style.display = "none";
     user_module.style.display = "none";
     log.style.display = "block";
     graph_tree.style.display = "none";
     hash_div.style.display = "none";
+    blockchain_div.style.display = "none";
 
 }
 
@@ -1130,6 +1190,8 @@ function user_to_tree_graph() {
     showTreeGraph();
 }
 
+
+
 function user_to_list() {
     var log = document.getElementById("part1");
     var admin_module = document.getElementById("part2");
@@ -1160,6 +1222,7 @@ function list_to_user() {
 function user_to_chat() {
     var user_module = document.getElementById("part3");
     var messi = document.getElementById("messi");
+    updateChats();
     user_module.style.display = "none";
     messi.style.display = "block";
     $('#transmitter').empty().append('<option value="0">Seleccionar</option>');
