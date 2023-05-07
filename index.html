@@ -103,6 +103,26 @@
             <div class="log_buttons" id="load_json_admin">
                 <button class="log_button" id="log_in_bt" onclick="call_file_explorer()">Buscar JSON</button>
                 <button class="log_button" id="log_in_bt" onclick="load_user()">Cargar información</button>
+
+                <div class="mt-5">
+                    <h3 class="text-center">
+                        <button class="btn btn-warning" onclick="getBlock(0)"> Mostrar Nodo Inicial</button>
+                    </h3>
+                    <hr />
+                    <div class="row">
+                        <div class="col-2">
+                            <button class="btn btn-danger w-100" onclick="getBlock(-1)">
+                                << Anterior</button>
+                        </div>
+                        <div class="col-8" id="show-block">
+    
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-danger w-100" onclick="getBlock(1)"> Siguiente >></button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -111,18 +131,18 @@
 
         <div id="hash_info">
 
-                <table id="hash_table" >
-                    <thead>
-                        <tr>
-                            <th>Carnet</th>
-                            <th>Nombre</th>
-                            <th>Password</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Agrega más filas según sea necesario -->
-                    </tbody>
-                </table>
+            <table id="hash_table">
+                <thead>
+                    <tr>
+                        <th>Carnet</th>
+                        <th>Nombre</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Agrega más filas según sea necesario -->
+                </tbody>
+            </table>
 
         </div>
     </div>
@@ -151,7 +171,7 @@
                     <button class="log_button" onclick="go_to_initial()">Inicio</button>
                     <button class="log_button" onclick="user_to_tree_graph()">Reporte Carpetas</button>
                     <button class="log_button" onclick="user_to_list()">Reporte Archivos</button>
-                    <button class="log_button">Subir Archivos</button>
+                    <button class="log_button" onclick="user_to_chat()">Mensajería</button>
                     <button class="log_button" id="close_ses" onclick="user_to_login()">Cerrar Sesion</button>
                 </div>
 
@@ -159,6 +179,45 @@
 
         </div>
     </div>
+
+    <div id="messi">
+        <header id="header3">
+            <h1>GoDrive</h1>
+            <!-- <a class="admin_link" onclick="show_user_interface()">Ver estudiantes</a>
+                <a class="admin_link" onclick="load_graph_interface()">Árbol de estudiantes</a>
+                <a class="admin_link" id="loading_json" onclick="load_user_interface()">Carga masiva</a>
+                <a class="admin_link" onclick="admin_to_login()">Cerrar Sesión</a> -->
+        </header>
+        <div id="messi_ch">
+
+
+            <div class="container mt-3 p-0 border" id="transmitter-chat">
+            </div>
+
+
+            <div id="message_buttons">
+
+                <div class="form-group">
+                    
+                    <div class="row">
+                        <div class="col-9">
+                            <input type="text" class="form-control" id="msg-transmitter" placeholder="Ingresa el mensaje" />
+                        </div>
+                        <select class="form-select" id="transmitter" onchange="updateChats()">
+                            <option value="">--Seleccionar--</option>
+                        </select>
+                        <div class="col-3">
+                            <button class="btn btn-success w-100 log_button" onclick="sendMessage('transmitter')">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="log_button" onclick="chat_to_user()">Regresar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
     <div id="part4">
         <h1>GoDrive</h1>

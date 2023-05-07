@@ -215,6 +215,9 @@ a:active{
 #part3{
     display: none;
 }
+#messi{
+    display: none;
+}
 #part4{
     display: none;
 }
@@ -224,6 +227,25 @@ a:active{
 #graph_image{
     margin-top:85px;
     display: none;
+}
+#transmitter-chat{
+    border: 4px solid black;
+    width: 750px;
+    height: 400px;
+    margin-top: 10px;
+    margin-left: 10px;
+    border-radius: 1cm;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#message_buttons{
+    border: 4px solid black;
+    width: 405px;
+    height: 250px;
+    margin-top: 10px;
+    margin-left: 60px;
+    border-radius: 1cm;
 }
 
 #hash_info{
@@ -245,6 +267,12 @@ a:active{
     display: none;
 }
 #file_ch{
+    display: flex;
+    align-items:center;
+    align-content: space-between;
+}
+#messi_ch{
+    margin-top: 125px;
     display: flex;
     align-items:center;
     align-content: space-between;
@@ -281,12 +309,27 @@ a:active{
 
 }
 
+#message_buttons button{
+    margin-top: 25px;
+    margin-left: 13px;
+}
 #file_manager_buttons button{
     margin-top: 25px;
     margin-left: 13px;
 }
 
+.transmitter{
+    margin-top: 25px;
+    margin-left: 13px;
+}
+
 #new_file{
+    margin-left: 50px;
+    width: 300px;
+    margin-top:15px;
+}
+
+#msg-transmitter{
     margin-left: 50px;
     width: 300px;
     margin-top:15px;
@@ -314,4 +357,11 @@ a:active{
     margin-top: 100px;
 }
 
+.left_item{
+    text-align: left;
+}
 
+
+.right_item{
+    text-align: right;
+}

@@ -1,5 +1,243 @@
 var global_count = 1;
 
+
+class Block {
+    constructor(index, transmitter, receiver, message, previusHash, hash) {
+        this.index = index;
+        this.timestamp = new Date();
+        this.transmitter = transmitter;
+        this.receiver = receiver;
+        this.message = message;
+        this.previusHash = previusHash; // HASH DEL BLOQUE ANTERIOR
+        this.hash = hash; // HASH DEL BLOQUE ACTUAL
+
+        // APUNTADORES DEL NODO
+        this.next = null;
+        this.prev = null;
+    }
+    // RETORNAR FECHA EN FORMATO DEL ENUNCIADO
+    getFormatDate() {
+        // FORMATO DE FECHA DD-MM-YYYY :: HH:MM:SS
+        let day = this.timestamp.getDate();
+        let month = this.timestamp.getMonth();
+        let year = this.timestamp.getFullYear();
+        let hours = this.timestamp.getHours();
+        let min = this.timestamp.getMinutes();
+        let sec = this.timestamp.getSeconds();
+        return `${day}-${month}-${year} :: ${hours}:${min}:${sec}`;
+    }
+}
+
+class BlockChain {
+    // CONSTRUCTOR PARA LA LISTA DOBLE
+    constructor() {
+        this.head = null;
+        this.end = null;
+        this.size = 0;
+    }
+
+    // INSERCIÓN SÓLO AL FINAL **FUNCIÓN ASÍNCRONA**
+    async insert(transmitter, receiver, message) {
+        let newNode = new Block(this.size, transmitter, receiver, message, "", "");
+        if (this.head == null) {
+            // HASH ANTERIOR DEL PRIMER BLOQUE
+            newNode.previusHash = "00000";
+            // ASIGNAR EL HASH AL BLOQUE ACTUAL
+            newNode.hash = await this.getSha256(newNode);
+            // INSERTAR EL NODO
+            this.head = newNode;
+            this.end = newNode;
+            // AUMENTAR TAMAÑO
+            this.size++;
+        } else {
+            // ASIGNAR PRIMERO EL HASH ANTERIOR
+            newNode.previusHash = this.end.hash;
+            // CREAR EL HASH ACTUAL
+            newNode.hash = await this.getSha256(newNode);
+            // INSERTAR EL NODO AL FINAL
+            this.end.next = newNode;
+            newNode.prev = this.end;
+            this.end = newNode;
+            // AUMENTAR TAMAÑO
+            this.size++;
+        }
+    }
+
+    // MÉTODO PARA OBTENER SHA256 DE UN BLOQUE
+    // REF: https://stackoverflow.com/questions/63736585/why-does-crypto-subtle-digest-return-an-empty-object
+    async getSha256(block) {
+        // PASAR EL OBJETO A STRING
+        let str = JSON.stringify(block).toString();
+        // OBTENER LOS BYTES DEL STRING 
+        let bytes = new TextEncoder().encode(str);
+        // OBTENER BYTES DEL HASH
+        let hashBytes = await window.crypto.subtle.digest("SHA-256", bytes);
+        // PASAR EL HASH A STRING 
+        let hash = Array.prototype.map.call(new Uint8Array(hashBytes), x => ('00' + x.toString(16)).slice(-2)).join('');
+        // RETORNAR EL HASH
+        return hash;
+    }
+
+    // METODO PARA IMPRIMIR EN CONSOLA
+    print() {
+        if (this.head !== null) {
+            let temp = this.head;
+            while (temp !== null) {
+                console.log(temp);
+                temp = temp.next;
+            }
+        }
+    }
+
+    // NÚMEROS DE CARNET DEL CHAT
+    getMessages(transmitter, receiver) {
+        if (this.head !== null) {
+            let msgs = "";
+            let temp = this.head;
+            while (temp !== null) {
+                if (String(temp.receiver) === String(transmitter)) {
+                    if (String(temp.transmitter) === String(receiver)) {
+                        msgs += `<li class="list-group-item class="left_item"">${temp.message}</li>`;
+                    }
+                } else if (String(temp.transmitter) === String(transmitter)) {
+                    if (String(temp.receiver) === String(receiver)) {
+                        msgs += `<li class="right_item">${temp.message}</li>`;
+                    }
+                }
+                temp = temp.next;
+            }
+            if (msgs) {
+                return `
+                    <ul class="list-group">
+                        ${msgs}
+                    </ul>
+                `;
+            }
+        }
+        return "No hay mensajes";
+    }
+
+    blockReport(index = 0) {
+        if (this.head) {
+            let temp = this.head;
+            while (temp !== null) {
+                if (temp.index === index) {
+                    // EL NOMBRE DE LA TABLA TIENE EL INDEX DEL BLOQUE, PARA PODER OBTENER EL SIGUIENTE O EL ANTERIOR
+                    return `
+                        <table class="table table-bordered" id="block-table" name="${temp.index}">
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="col-3">Index</th>
+                                    <td class="col-9">${temp.index}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Timestamp</th>
+                                    <td>${temp.getFormatDate()}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Transmitter</th>
+                                    <td>${temp.transmitter}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Receiver</th>
+                                    <td>${temp.receiver}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Message</th>
+                                    <td>${temp.message}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Previus Hash</th>
+                                    <td>${temp.previusHash}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Hash del Bloque</th>
+                                    <td>${temp.hash}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    temp = temp.next;
+                }
+
+            }
+        }
+        return "";
+    }
+
+
+}
+
+// INSTANCIA DE LA CLASE
+
+
+// ACTUALIZAR AMBOS CHATS 
+function updateChats() {
+    let transmitter = $('#transmitter').val();
+    let receiver = current_student.carnet;
+    $('#transmitter-chat').html(blockChain.getMessages(transmitter, receiver));
+}
+
+
+async function sendMessage() {
+    // OBTENER VALORES DEL SELECT 
+    let transmitter = current_student.carnet; 
+    let receiver = $('#transmitter').val();
+
+
+    if (transmitter && receiver) {
+
+
+
+        let msgt = $('#msg-transmitter').val();
+  
+        await blockChain.insert(transmitter, receiver, msgt);
+        $('#msg-transmitter').val();
+
+
+        alert("Mensaje enviado");
+        // ACTUALIZAR CHATS
+        updateChats();
+    } else {
+        alert("No ha seleccionado Receptop o Emisor");
+    }
+}
+
+
+function getBlock(index) {
+    if (index === 0) {
+        let html = blockChain.blockReport(index);
+        if (html) {
+            $('#show-block').html(html);
+        }
+    } else {
+        let currentBlock = Number($('#block-table').attr('name'));
+
+        if (index < 0) { // MOSTRAR EL ANTERIOR
+            if (currentBlock - 1 < 0) {
+                alert("No existen elementos anteriores");
+            } else {
+                let html = blockChain.blockReport(currentBlock - 1);
+                if (html) {
+                    $('#show-block').html(html);
+                }
+            }
+
+        } else if (index > 0) { // MOSTRAR EL SIGUIENTE
+            if (currentBlock + 1 > blockChain.size) {
+                alert("No existen elementos siguientes");
+            } else {
+                let html = blockChain.blockReport(currentBlock + 1);
+                if (html) {
+                    $('#show-block').html(html);
+                }
+            }
+        }
+    }
+}
+
+
 function hash(string) {
     const utf8 = new TextEncoder().encode(string);
     return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
@@ -658,6 +896,7 @@ class Doubly_linked_list {
 var student_tree = new student_avl_tree();
 var current_student = new student_node();
 var student_hash_table = new HashTable();
+let blockChain = new BlockChain();
 //END MOVIE AVL TREE
 function call_file_explorer() {
     document.getElementById("student_json").click();
@@ -763,7 +1002,7 @@ function load_user() {
             for (j in _data[i]) {
                 let data = _data[i][j];
                 console.log(data.nombre, data.carnet, data.password, data.carpeta_raiz);
-                student_tree.insert(data.nombre, data.carnet, data.password, data.carpeta_raiz);
+                student_tree.insert(data.nombre, data.carnet, data.password, data.Carpeta_Raiz);
 
             }
         }
@@ -772,6 +1011,8 @@ function load_user() {
         student_tree.post_order(student_tree.root);
 
         student_hash_table.show();
+
+
     };
     reader.readAsText(file);
     alert("Se ha cargado la información");
@@ -916,6 +1157,38 @@ function list_to_user() {
     graph_list.style.display = "none";
 }
 
+function user_to_chat() {
+    var user_module = document.getElementById("part3");
+    var messi = document.getElementById("messi");
+    user_module.style.display = "none";
+    messi.style.display = "block";
+    $('#transmitter').empty().append('<option value="0">Seleccionar</option>');
+    $(document).ready(() => {
+        let optionsForSelect1 = "";
+        let optionsForSelect2 = "";
+        student_hash_table.table.forEach((user, i) => {
+            if (user.carnet != current_student.carnet) {
+                if (i > 1) {
+                    optionsForSelect1 += `
+                        <option value="${user.carnet}">${user.nombre}</option>
+                    `;
+                }
+            }
+        });
+
+        $('#transmitter').append(optionsForSelect1);
+        $('#receiver').append(optionsForSelect2);
+
+    });
+}
+
+function chat_to_user() {
+    var user_module = document.getElementById("part3");
+    var messi = document.getElementById("messi");
+    user_module.style.display = "block";
+    messi.style.display = "none";
+
+}
 //Creating files
 function create_file() {
     let folderName = document.getElementById('new_file').value;
