@@ -20,7 +20,7 @@
 -Godrive es un navegador de archivos totalmente confiable para los estudiantes de la Universidad de San Carlos<br>
 -A continuación se explicará el uso de esta aplicación<br>
 -Para iniciar sesión:<br>
-<img src="Img/1.PNG" alt="drawing" style="width:100px;"/><br>
+<img src="1.PNG" alt="drawing" style="width:100px;"/><br>
 -Para ingresar al modulo de administrador es necesario que ingreses:<br>
 -User: admin<br>
 -Pass: admin<br>
